@@ -1,10 +1,10 @@
 #include "Puyo.h"
 #include "DxLib.h"
 
-Puyo::Puyo(PuyoType type):size_(48)
+Puyo::Puyo(Vector2 pos, PuyoType type):size_(48)
 {
-	pos_.y = 0;
-	pos_.x = size_ * 3;
+	pos_.y = pos.y;
+	pos_.x = pos.x;
 	type_ = type;
 	alive_ = true;
 	Init();
@@ -23,7 +23,7 @@ bool Puyo::Update()
 		{
 			pos_.y ++;
 			return true;
-		}
+		}	
 	}
 	return false;
 }
@@ -106,12 +106,17 @@ Vector2 Puyo::SetPos(Vector2 pos)
 void Puyo::Init()
 {
 	dirPermit_ = { 1,1,1,1 };
-	dropSpeed_ = 60;
-	softdrop_ = 30;
+	dropSpeed_ = 10;
+	softdrop_ = 5;
 	puyoFrame_ = 0;
+	color_.try_emplace(PuyoType::RED,0xff0000);
+	color_.try_emplace(PuyoType::GREEN,0x00ff00);
+	color_.try_emplace(PuyoType::YELLOW,0xffff00);
+	color_.try_emplace(PuyoType::BLUE,0x0000ff);
+	color_.try_emplace(PuyoType::PURPLE,0xff00ff);
 }
 
 void Puyo::Draw()
 {
-	DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,0xffffff,true);
+	DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);
 }

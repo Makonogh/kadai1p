@@ -4,13 +4,13 @@
 
 enum class PuyoType
 {
-	NON,
 	RED,
 	GREEN,
 	YELLOW,
 	BLUE,
 	PURPLE,
 	WALL,
+	NON,
 	MAX
 };
 
@@ -32,7 +32,7 @@ union DirPermit
 class Puyo
 {
 public:
-	Puyo(PuyoType type);
+	Puyo(Vector2 pos,PuyoType type);
 	~Puyo();
 	bool Update();	
 	void Move(InputID id);					// Move関数
@@ -44,9 +44,10 @@ public:
 	void SetAlive(bool alive);				// 死の宣告(消していいかフラグ)
 	bool GetAlive(void);					// フラグの取得
 	Vector2 GetPos(void);					// ぷよの座標の取得
-	Vector2 SetPos(Vector2 pos);				// ぷよの座標のセット
+	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
 private:
 	void Init();							// ぷよの初期化関数
+	std::map<PuyoType,int> color_;			// ぷよのタイプとカラー
 	DirPermit dirPermit_;					// 上下左右のﾋﾞｯﾄﾌｨｰﾙﾄﾞ
 	const int size_;						// ｻｲｽﾞ
 	Vector2 pos_;							// 座標

@@ -1,6 +1,7 @@
 #include "PlayUnit.h"
 #include "input/Controller.h"
 #include "Stage.h"
+#include "_debug/_DebugConOut.h"
 
 PlayUnit::PlayUnit(Stage& stage):stage_(stage)
 {
@@ -13,9 +14,10 @@ PlayUnit::~PlayUnit()
 
 bool PlayUnit::Update()
 {
+	auto CntData = stage_.controller_->GetCntData();
 	for (auto data : InputID())
 	{
-		KeyAct[data];
+		KeyAct[data](CntData);
 	}
 
 	return false;
@@ -24,11 +26,20 @@ bool PlayUnit::Update()
 bool PlayUnit::Init()
 {
 	targetID_ = 0;
-
+	KeyAct.try_emplace(InputID::UP, [&](CntData cntData)
+		{
+			if (cntData[InputID::UP][static_cast<int>(Trg::Now)] && !cntData[InputID::LEFT][static_cast<int>(Trg::Old)])
+			{
+				stage_.puyoVec_[0]->Move(InputID::UP);
+				stage_.puyoVec_[1]->Move(InputID::UP);
+			}
+		}
+	);
 	KeyAct.try_emplace(InputID::DOWN, [&](CntData cntData)
 		{
 			if (cntData[InputID::DOWN][static_cast<int>(Trg::Now)])
 			{
+				TRACE("%d", cntData[InputID::DOWN][static_cast<int>(Trg::Now)]);
 				stage_.puyoVec_[0]->SoftDrop();
 				stage_.puyoVec_[1]->SoftDrop();
 			}
@@ -62,7 +73,7 @@ bool PlayUnit::Init()
 	);
 	KeyAct.try_emplace(InputID::BT2, [&](CntData cntData)
 		{
-			if (cntData[InputID::BT1][static_cast<int>(Trg::Now)] && !cntData[InputID::BT1][static_cast<int>(Trg::Old)])
+			if (cntData[InputID::BT2][static_cast<int>(Trg::Now)] && !cntData[InputID::BT2][static_cast<int>(Trg::Old)])
 			{
 				RotPuyo(stage_.puyoVec_[targetID_]->GetPos(), stage_.puyoVec_[targetID_ ^ 1]->GetPos(), false);
 			}

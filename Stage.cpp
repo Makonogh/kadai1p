@@ -85,7 +85,7 @@ void Stage::Update(void)
 
 	}
 
-	if (!(puyoVec_[0]->Update()))
+	/*if (!(puyoVec_[0]->Update()))
 	{
 		auto vec = puyoVec_[0]->GetGrid(blockSize_);
 		data_[vec.x][vec.y] = puyoVec_[0]->GetPuyoID();
@@ -99,7 +99,7 @@ void Stage::Update(void)
 				data_[pos.x][pos.y] = PuyoType::NON;
 			}
 		}
-	}
+	}*/
 	/*PuyoInstance();*/
 	Draw();
 }
@@ -129,7 +129,11 @@ bool Stage::Init(void)
 		data_[0][no] = PuyoType::WALL;
 		data_[STAGE_CHIP_X - 1][no] = PuyoType::WALL;
 	}
-	puyoVec_.emplace_back(std::make_unique<Puyo>(PuyoType::RED));
+	auto id = static_cast<PuyoType>(GetRand(4));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4,0),id));
+	id = static_cast<PuyoType>(GetRand(4));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_),id));
+
 	controller_ = std::make_unique<KeyInput>();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
@@ -170,7 +174,8 @@ void Stage::EraseSet()
 
 bool Stage::PuyoInstance()
 {
-	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(PuyoType::RED));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_ * 3),PuyoType::RED));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_ * 4), PuyoType::RED));
 	return false;
 }
 
