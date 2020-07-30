@@ -2,5 +2,8 @@
 
 struct Fall
 {
+	void operator() ()
+	{
 
+	}
 };

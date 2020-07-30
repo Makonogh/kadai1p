@@ -26,8 +26,8 @@ bool KeyInput::Setup(int no)
             {InputID::DOWN,KEY_INPUT_NUMPAD5},
             {InputID::LEFT,KEY_INPUT_NUMPAD4},
             {InputID::RIGHT,KEY_INPUT_NUMPAD6},
-            {InputID::BT1,KEY_INPUT_NUMPAD7},
-            {InputID::BT2,KEY_INPUT_NUMPAD9}
+            {InputID::BT1,KEY_INPUT_NUMPAD9},
+            {InputID::BT2,KEY_INPUT_NUMPAD7}
         };
     }
 

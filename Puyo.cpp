@@ -16,14 +16,17 @@ Puyo::~Puyo()
 
 bool Puyo::Update()
 {
-	puyoFrame_++;
 	if (dirPermit_.perBit.d == 1)
 	{
-		if (puyoFrame_ % dropSpeed_ == 0)
+		if (puyoFrame_ < dropSpeed_ )
 		{
-			pos_.y ++;
-			return true;
+			puyoFrame_++;
 		}	
+		else
+		{
+			pos_.y+= 2;
+			puyoFrame_ = 0;
+		}
 	}
 	return false;
 }
@@ -79,7 +82,7 @@ PuyoType Puyo::GetPuyoID()
 
 void Puyo::SoftDrop(void)
 {
-	dropSpeed_ = softdrop_;
+	puyoFrame_ = dropSpeed_;
 }
 
 void Puyo::SetAlive(bool alive)
@@ -106,7 +109,7 @@ Vector2 Puyo::SetPos(Vector2 pos)
 void Puyo::Init()
 {
 	dirPermit_ = { 1,1,1,1 };
-	dropSpeed_ = 10;
+	dropSpeed_ = 5;
 	softdrop_ = 5;
 	puyoFrame_ = 0;
 	color_.try_emplace(PuyoType::RED,0xff0000);

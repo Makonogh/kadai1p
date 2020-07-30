@@ -28,7 +28,7 @@ bool PlayUnit::Init()
 	targetID_ = 0;
 	KeyAct.try_emplace(InputID::UP, [&](CntData cntData)
 		{
-			if (cntData[InputID::UP][static_cast<int>(Trg::Now)] && !cntData[InputID::LEFT][static_cast<int>(Trg::Old)])
+			if (cntData[InputID::UP][static_cast<int>(Trg::Now)] && !cntData[InputID::UP][static_cast<int>(Trg::Old)])
 			{
 				stage_.puyoVec_[0]->Move(InputID::UP);
 				stage_.puyoVec_[1]->Move(InputID::UP);
@@ -95,22 +95,22 @@ void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 	if (vec1.y < vec2.y)
 		// ã‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_ ^ 1]->GetPos() + MoveLen });
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x + MoveLen , stage_.puyoVec_[targetID_]->GetPos().y});
 	}
 	if (vec1.y > vec2.y)
 		// ‰º‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_ ^ 1]->GetPos() - MoveLen });
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x - MoveLen , stage_.puyoVec_[targetID_]->GetPos().y});
 	}
 	if (vec1.x < vec2.x)
 		// ‰E‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_ ^ 1]->GetPos().x - MoveLen,stage_.puyoVec_[targetID_ ^ 1]->GetPos().y + MoveLen });
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x , stage_.puyoVec_[targetID_]->GetPos().y - MoveLen});
 	}
 	if (vec1.x > vec2.x)
 		// ¶‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_ ^ 1]->GetPos().x + MoveLen,stage_.puyoVec_[targetID_ ^ 1]->GetPos().y - MoveLen });
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen });
 	}
 
 	if (stage_.puyoVec_[targetID_]->GetPos().y > stage_.puyoVec_[targetID_ ^ 1]->GetPos().y)

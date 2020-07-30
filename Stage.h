@@ -18,8 +18,11 @@ class PlayUnit;
 
 enum class StageMode
 {
-	DROP,
-	RENSA,
+	Drop,
+	Erase,
+	Fall,
+	Munyon,
+	Puyon,
 	MAX
 };
 
@@ -33,22 +36,22 @@ public:
 	void Draw(void);
 	void Update(void);
 private:
-	bool Init(void);								// 初期化関数
-	void EraseSet();								// ぷよの削除セット
-	bool PuyoInstance();							// ぷよの生成
-	bool ErasePuyo();								// ぷよの削除関数
-	bool SetPermition(std::unique_ptr<Puyo>& puyo);			    	// ぷよのパーミッション設定
+	bool Init(void);									// 初期化関数
+	void EraseSet();									// ぷよの削除セット
+	bool PuyoInstance();								// ぷよの生成
+	bool ErasePuyo();									// ぷよの削除関数
+	bool SetPermition(std::unique_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
 
-	std::vector<std::unique_ptr<Puyo>> puyoVec_;	// ぷよの情報を格納
+	std::vector<std::shared_ptr<Puyo>> puyoVec_;		// ぷよの情報を格納
 
-	std::unique_ptr<Controller> controller_;		// コントローラー情報を格納するユニークポインタ
-	std::unique_ptr<PlayUnit> playUnit_;			// プレイヤー処理のの情報を格納するユニークポインタ
+	std::unique_ptr<Controller> controller_;			// コントローラー情報を格納するユニークポインタ
+	std::unique_ptr<PlayUnit> playUnit_;				// プレイヤー処理のの情報を格納するユニークポインタ
 	
-	std::vector<PuyoType> baseData_;				// ぷよの配置情報を格納する変数 (縦×横)	
-	std::vector<PuyoType*> data_;					// ぷよの配置情報の一次変数(横)
+	std::vector<std::shared_ptr<Puyo>> baseData_;		// ぷよの配置情報を格納する変数 (縦×横)	
+	std::vector<std::shared_ptr<Puyo>*> data_;			// ぷよの配置情報の一次変数(横)
 
-	std::vector<PuyoType> eraseBaseData_;			// ぷよの配置情報を格納する変数 (縦×横)	
-	std::vector<PuyoType*> eraseData_;				// ぷよの配置情報の一次変数(横)
+	std::vector<std::shared_ptr<Puyo>> eraseBaseData_;	// ぷよの配置情報を格納する変数 (縦×横)	
+	std::vector<std::shared_ptr<Puyo>*> eraseData_;		// ぷよの配置情報の一次変数(横)
 
 	Vector2 offset_;								// ステージのオフセット
 	Vector2 size_;									// ステージのサイズ	
@@ -57,6 +60,7 @@ private:
 	int id_;										// ID
 	int blockSize_;									// 1ブロックのサイズ
 	StageMode stagemode_;							// ステージモードを格納する変数
+	std::map<StageMode, std::function<void(Stage&)>> stageAct_;
 
 	friend PlayUnit;
 	friend Drop;

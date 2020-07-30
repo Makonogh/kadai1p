@@ -2,5 +2,8 @@
 
 struct Munyon
 {
+	void operator() ()
+	{
 
+	}
 };

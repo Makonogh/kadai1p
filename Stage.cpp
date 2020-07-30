@@ -56,26 +56,27 @@ void Stage::Draw(void)
 void Stage::Update(void)
 {
 	(*controller_)();
-	bool nextFlag = true;
-	std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
-		{
-			nextFlag &= SetPermition(puyo);
-		}
-	);
+	
+	stageAct_[stagemode_](*this);
+	//std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
+	//	{
+	//		SetPermition(puyo);
+	//	}
+	//);
 
-	playUnit_->Update();
+	//playUnit_->Update();
 
-	bool rensaFlag = true;
-	std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
-		{
-			if (!puyo->Update())
-			{
-				rensaFlag = false;
-			}
-		}
-	);
+	//bool rensaFlag = true;
+	//std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
+	//	{
+	//		if (!puyo->Update())
+	//		{
+	//			rensaFlag = false;
+	//		}
+	//	}
+	//);
 
-	if (rensaFlag)
+	/*if (rensaFlag)
 	{
 		stagemode_ = StageMode::RENSA;
 	}
@@ -83,7 +84,7 @@ void Stage::Update(void)
 	if (stagemode_ == StageMode::RENSA)
 	{
 
-	}
+	}*/
 
 	/*if (!(puyoVec_[0]->Update()))
 	{
@@ -117,26 +118,34 @@ bool Stage::Init(void)
 	}
 	for (int no = 0; no < STAGE_CHIP_X * STAGE_CHIP_Y; no++)
 	{
-		baseData_[no] = PuyoType::NON;
+		baseData_[no].reset;
 	}
 	for (int no = 0; no < STAGE_CHIP_X; no++)
 	{
-		data_[no][0] = PuyoType::WALL;
-		data_[no][STAGE_CHIP_Y - 1] = PuyoType::WALL;
+		data_[no][0] = std::make_shared<Puyo>(Vector2(blockSize_ * no, 0), PuyoType::WALL); //PuyoType::WALL;
+		data_[no][STAGE_CHIP_Y - 1] = std::make_shared<Puyo>(Vector2(blockSize_ * no, STAGE_CHIP_Y - 1), PuyoType::WALL);
 	}
 	for (int no = 0; no < STAGE_CHIP_Y; no++)
 	{
-		data_[0][no] = PuyoType::WALL;
-		data_[STAGE_CHIP_X - 1][no] = PuyoType::WALL;
+		data_[0][no] = std::make_shared<Puyo>(Vector2(0, blockSize_ * no), PuyoType::WALL);;
+		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
+
 	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4,0),id));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
 	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_),id));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
+	
 
 	controller_ = std::make_unique<KeyInput>();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
+	stagemode_ = StageMode::Drop;
+	stageAct_.try_emplace(StageMode::Drop, Drop());
+	stageAct_.try_emplace(StageMode::Erase, Erase());
+	stageAct_.try_emplace(StageMode::Fall, Fall());
+	stageAct_.try_emplace(StageMode::Munyon, Munyon());
+	stageAct_.try_emplace(StageMode::Puyon, Puyon());
 
 	return false;
 }
@@ -147,9 +156,9 @@ void Stage::EraseSet()
 	auto vec = puyoVec_[0]->GetGrid(blockSize_);
 	int count = 0;
 	std::function<void(PuyoType, Vector2)> checkPuyo = [&](PuyoType id, Vector2 vec) {
-		if (eraseData_[vec.x][vec.y] == PuyoType::NON)
+		if (eraseData_[vec.x][vec.y])
 		{
-			if (data_[vec.x][vec.y] == id)
+			if (data_[vec.x][vec.y]->GetPuyoID == id)
 			{
 				count++;
 				checkPuyo(id, { vec.x + 1,vec.y });
@@ -164,18 +173,33 @@ void Stage::EraseSet()
 
 	if (count < 4)
 	{
-		memset(eraseBaseData_.data(), 0, eraseBaseData_.size() * sizeof(PuyoType));
+		for (auto&& puyo : eraseBaseData_)
+		{
+			puyo.reset();
+			/*memset(eraseBaseData_.data(), 0, eraseBaseData_.size() * sizeof(PuyoType));*/
+		}
 	}
 	else
 	{
-		
+		for (auto&& puyo : puyoVec_)
+		{
+			auto pos = puyo->GetGrid(blockSize_);
+
+			if(eraseData_[pos.y][pos.x])
+			{
+					puyo->SetAlive(false);
+					data_[pos.y][pos.x].reset();
+			}
+		}
 	}
 }
 
 bool Stage::PuyoInstance()
 {
-	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_ * 3),PuyoType::RED));
-	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_ * 4), PuyoType::RED));
+	auto id = static_cast<PuyoType>(GetRand(4));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	id = static_cast<PuyoType>(GetRand(4));
+	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	return false;
 }
 
@@ -191,19 +215,19 @@ bool Stage::SetPermition(std::unique_ptr<Puyo>& puyo)
 	DirPermit dirPermit;
 	dirPermit = { 1,1,1,1 };
 	Vector2 pos = puyo->GetGrid(blockSize_);
-	if (data_[pos.x - 1][pos.y] != PuyoType::NON)
+	if (data_[pos.x - 1][pos.y])
 	{
 		dirPermit.perBit.l = 0;
 	}
-	if (data_[pos.x + 1][pos.y] != PuyoType::NON)
+	if (data_[pos.x + 1][pos.y])
 	{
 		dirPermit.perBit.r = 0;
 	}
-	if (data_[pos.x][pos.y - 1] != PuyoType::NON)
+	if (data_[pos.x][pos.y - 1])
 	{
 		dirPermit.perBit.u = 0;
 	}
-	if (data_[pos.x][pos.y + 1] != PuyoType::NON)
+	if (data_[pos.x][pos.y + 1])
 	{
 		dirPermit.perBit.d = 0;
 	}

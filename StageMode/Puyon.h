@@ -2,5 +2,8 @@
 
 struct Puyon
 {
+	void operator() (Stage &stage)
+	{
 
+	}
 };
