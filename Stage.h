@@ -38,10 +38,9 @@ public:
 	void Update(void);
 private:
 	bool Init(void);									// 初期化関数
-	void EraseSet();									// ぷよの削除セット
 	bool PuyoInstance();								// ぷよの生成
-	bool ErasePuyo();									// ぷよの削除関数
 	bool SetPermition(std::shared_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
+	Vector2 GetGrid(Vector2 pos);						// 座標からグリッド求める関数
 
 	std::vector<std::shared_ptr<Puyo>> puyoVec_;		// ぷよの情報を格納
 

@@ -17,11 +17,9 @@ bool PlayUnit::Update()
 	auto CntData = stage_.controller_->GetCntData();
 	for (auto data : InputID())
 	{
-		
-
 		KeyAct[data](CntData);
 	}
-
+	TRACE("%d",targetID_);
 	return false;
 }
 
@@ -41,7 +39,6 @@ bool PlayUnit::Init()
 		{
 			if (cntData[InputID::DOWN][static_cast<int>(Trg::Now)])
 			{
-				TRACE("%d", cntData[InputID::DOWN][static_cast<int>(Trg::Now)]);
 				stage_.puyoVec_[0]->SoftDrop();
 				stage_.puyoVec_[1]->SoftDrop();
 			}
@@ -88,6 +85,7 @@ bool PlayUnit::Init()
 void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 {
 	auto MoveLen = stage_.blockSize_;
+	Vector2 RotPos;
 	// Rotate true::ŽžŒv‰ñ‚è false::”¼ŽžŒv‰ñ‚è
 	if (Rotate)
 	{
@@ -97,27 +95,44 @@ void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 	if (vec1.y < vec2.y)
 		// ã‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x + MoveLen , stage_.puyoVec_[targetID_]->GetPos().y});
+		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x + MoveLen , stage_.puyoVec_[targetID_]->GetPos().y};
 	}
 	if (vec1.y > vec2.y)
 		// ‰º‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x - MoveLen , stage_.puyoVec_[targetID_]->GetPos().y});
+		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x - MoveLen , stage_.puyoVec_[targetID_]->GetPos().y};
 	}
 	if (vec1.x < vec2.x)
 		// ‰E‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x , stage_.puyoVec_[targetID_]->GetPos().y - MoveLen});
+		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x , stage_.puyoVec_[targetID_]->GetPos().y - MoveLen};
 	}
 	if (vec1.x > vec2.x)
 		// ¶‚É‚¢‚é‚Æ‚«
 	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos({ stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen });
+		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen };
 	}
 
-	if (stage_.puyoVec_[targetID_]->GetPos().y > stage_.puyoVec_[targetID_ ^ 1]->GetPos().y)
+	if (CheckMove(stage_.GetGrid(RotPos)))
+	{
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos(RotPos);
+	}
+
+	if (stage_.puyoVec_[targetID_]->GetPos().y < stage_.puyoVec_[targetID_ ^ 1]->GetPos().y)
 	{
 		std::swap(stage_.puyoVec_[targetID_], stage_.puyoVec_[targetID_ ^ 1]);
 		targetID_ ^= 1;
+	}
+}
+
+bool PlayUnit::CheckMove(Vector2 vec)
+{
+	if (stage_.data_[vec.x][vec.y])
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }

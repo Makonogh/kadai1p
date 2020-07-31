@@ -67,9 +67,7 @@ void Stage::Update(void)
 	//		SetPermition(puyo);
 	//	}
 	//);
-
 	//playUnit_->Update();
-
 	//bool rensaFlag = true;
 	//std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
 	//	{
@@ -79,7 +77,6 @@ void Stage::Update(void)
 	//		}
 	//	}
 	//);
-
 	/*if (rensaFlag)
 	{
 		stagemode_ = StageMode::RENSA;
@@ -89,7 +86,6 @@ void Stage::Update(void)
 	{
 
 	}*/
-
 	/*if (!(puyoVec_[0]->Update()))
 	{
 		auto vec = puyoVec_[0]->GetGrid(blockSize_);
@@ -120,9 +116,10 @@ bool Stage::Init(void)
 		data_.emplace_back(&baseData_[no * STAGE_CHIP_Y ]);
 		eraseData_.emplace_back(&eraseBaseData_[no * STAGE_CHIP_Y]);
 	}
-
-	baseData_.clear();
-
+	for (int no = 0; no < STAGE_CHIP_X * STAGE_CHIP_Y;no++)
+	{
+		baseData_[no].reset();
+	}
 	for (int no = 0; no < STAGE_CHIP_X; no++)
 	{
 		data_[no][0] = std::make_shared<Puyo>(Vector2(blockSize_ * no, 0), PuyoType::WALL); //PuyoType::WALL;
@@ -133,11 +130,6 @@ bool Stage::Init(void)
 		data_[0][no] = std::make_shared<Puyo>(Vector2(0, blockSize_ * no), PuyoType::WALL);;
 		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
-
-	//auto id = static_cast<PuyoType>(GetRand(4));
-	//puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
-	//id = static_cast<PuyoType>(GetRand(4));
-	//puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	
 	PuyoInstance();
 
@@ -154,18 +146,14 @@ bool Stage::Init(void)
 	return false;
 }
 
-
-
 bool Stage::PuyoInstance()
 {
 	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(),std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(),std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
 	return false;
 }
-
-
 
 bool Stage::SetPermition(std::shared_ptr<Puyo>& puyo)
 {
@@ -190,4 +178,9 @@ bool Stage::SetPermition(std::shared_ptr<Puyo>& puyo)
 	}
 	puyo->SetDirPermit(dirPermit);
 	return true;
+}
+
+Vector2 Stage::GetGrid(Vector2 pos)
+{
+	return Vector2(pos.x / blockSize_ + 1, pos.y / blockSize_ + 1);
 }

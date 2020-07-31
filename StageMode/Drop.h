@@ -14,14 +14,14 @@ struct Drop
 
 		stage.playUnit_->Update();
 
-		bool rensaFlag = true;
 		std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)
 			{
 				if (!puyo->Update())
 				{
-					auto vec = stage.puyoVec_[0]->GetGrid(stage.blockSize_);
-					stage.data_[vec.x][vec.y] = stage.puyoVec_[0];
-					stage.data_[vec.x][vec.y] = stage.puyoVec_[1];
+					auto vec1 = stage.puyoVec_[0]->GetGrid(stage.blockSize_);
+					auto vec2 = stage.puyoVec_[1]->GetGrid(stage.blockSize_);
+					stage.data_[vec1.x][vec1.y] = stage.puyoVec_[0];
+					stage.data_[vec2.x][vec2.y] = stage.puyoVec_[1];
 					stage.stagemode_ = StageMode::Erase;
 				}
 			}

@@ -13,6 +13,7 @@ public:
 private:
 	Stage& stage_;
 	void RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate);
+	bool CheckMove(Vector2 vec);
 	int targetID_;
 
 	std::map < InputID, std::function < void(CntData)>> KeyAct;
