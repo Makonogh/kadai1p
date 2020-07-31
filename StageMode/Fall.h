@@ -1,8 +1,9 @@
 #pragma once
+#include "../Stage.h"
 
 struct Fall
 {
-	void operator() ()
+	void operator() (Stage& stage)
 	{
 
 	}

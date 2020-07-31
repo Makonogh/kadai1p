@@ -1,12 +1,8 @@
 #pragma once
 #include "common/Vector2.h"
 #include "input/Controller.h"
-#include "Puyo.h"
-#include "StageMode/Drop.h"
-#include "StageMode/Erase.h"
-#include "StageMode/Munyon.h"
-#include "StageMode/Puyon.h"
-#include "StageMode/Fall.h"
+#include "Puyo/Puyo.h"
+
 #include <memory>
 #include <vector>
 #include <functional>
@@ -15,6 +11,11 @@
 #define STAGE_CHIP_Y 14
 
 class PlayUnit;
+struct Drop;
+struct Erase;
+struct Fall;
+struct Munyon;
+struct Puyon;
 
 enum class StageMode
 {
@@ -40,7 +41,7 @@ private:
 	void EraseSet();									// ぷよの削除セット
 	bool PuyoInstance();								// ぷよの生成
 	bool ErasePuyo();									// ぷよの削除関数
-	bool SetPermition(std::unique_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
+	bool SetPermition(std::shared_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
 
 	std::vector<std::shared_ptr<Puyo>> puyoVec_;		// ぷよの情報を格納
 

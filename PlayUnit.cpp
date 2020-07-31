@@ -17,6 +17,8 @@ bool PlayUnit::Update()
 	auto CntData = stage_.controller_->GetCntData();
 	for (auto data : InputID())
 	{
+		
+
 		KeyAct[data](CntData);
 	}
 

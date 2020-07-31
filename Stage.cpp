@@ -3,9 +3,13 @@
 #include <algorithm>
 #include "Input/KeyInput.h"
 #include "common/Vector2.h"
-#include "Puyo.h"
 #include <functional>
 #include "PlayUnit.h"
+#include "StageMode/Drop.h"
+#include "StageMode/Erase.h"
+#include "StageMode/Munyon.h"
+#include "StageMode/Puyon.h"
+#include "StageMode/Fall.h"
 
 int Stage::stageCount_ = 0;
 Stage::Stage(Vector2&& offset,Vector2&& size)
@@ -116,10 +120,9 @@ bool Stage::Init(void)
 		data_.emplace_back(&baseData_[no * STAGE_CHIP_Y ]);
 		eraseData_.emplace_back(&eraseBaseData_[no * STAGE_CHIP_Y]);
 	}
-	for (int no = 0; no < STAGE_CHIP_X * STAGE_CHIP_Y; no++)
-	{
-		baseData_[no].reset;
-	}
+
+	baseData_.clear();
+
 	for (int no = 0; no < STAGE_CHIP_X; no++)
 	{
 		data_[no][0] = std::make_shared<Puyo>(Vector2(blockSize_ * no, 0), PuyoType::WALL); //PuyoType::WALL;
@@ -131,11 +134,12 @@ bool Stage::Init(void)
 		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
 
-	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
-	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
+	//auto id = static_cast<PuyoType>(GetRand(4));
+	//puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	//id = static_cast<PuyoType>(GetRand(4));
+	//puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	
+	PuyoInstance();
 
 	controller_ = std::make_unique<KeyInput>();
 	controller_->Setup(id_);
@@ -150,67 +154,20 @@ bool Stage::Init(void)
 	return false;
 }
 
-void Stage::EraseSet()
-{
-	memset(eraseBaseData_.data(), 0, eraseBaseData_.size() * sizeof(PuyoType));
-	auto vec = puyoVec_[0]->GetGrid(blockSize_);
-	int count = 0;
-	std::function<void(PuyoType, Vector2)> checkPuyo = [&](PuyoType id, Vector2 vec) {
-		if (eraseData_[vec.x][vec.y])
-		{
-			if (data_[vec.x][vec.y]->GetPuyoID == id)
-			{
-				count++;
-				checkPuyo(id, { vec.x + 1,vec.y });
-				checkPuyo(id, { vec.x - 1,vec.y });
-				checkPuyo(id, { vec.x ,vec.y + 1 });
-				checkPuyo(id, { vec.x ,vec.y - 1 });
-			}
-		};
-	};
 
-	checkPuyo(puyoVec_[0]->GetPuyoID(),vec);
-
-	if (count < 4)
-	{
-		for (auto&& puyo : eraseBaseData_)
-		{
-			puyo.reset();
-			/*memset(eraseBaseData_.data(), 0, eraseBaseData_.size() * sizeof(PuyoType));*/
-		}
-	}
-	else
-	{
-		for (auto&& puyo : puyoVec_)
-		{
-			auto pos = puyo->GetGrid(blockSize_);
-
-			if(eraseData_[pos.y][pos.x])
-			{
-					puyo->SetAlive(false);
-					data_[pos.y][pos.x].reset();
-			}
-		}
-	}
-}
 
 bool Stage::PuyoInstance()
 {
 	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	puyoVec_.emplace(puyoVec_.begin(),std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
 	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace_back(std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
+	puyoVec_.emplace(puyoVec_.begin(),std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	return false;
 }
 
-bool Stage::ErasePuyo()
-{
-	auto itr = std::remove_if(puyoVec_.begin(), puyoVec_.end(), [](auto&& puyo) {return !(puyo->GetAlive()); });
-	puyoVec_.erase(itr, puyoVec_.end());
-	return false;
-}
 
-bool Stage::SetPermition(std::unique_ptr<Puyo>& puyo)
+
+bool Stage::SetPermition(std::shared_ptr<Puyo>& puyo)
 {
 	DirPermit dirPermit;
 	dirPermit = { 1,1,1,1 };

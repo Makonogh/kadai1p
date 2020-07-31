@@ -149,7 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="input\MouseInput.cpp" />
     <ClCompile Include="PlayUnit.cpp" />
-    <ClCompile Include="Puyo.cpp" />
+    <ClCompile Include="Puyo\Puyo.cpp" />
     <ClCompile Include="SceneMng.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="_debug\_DebugConOut.cpp" />
@@ -164,7 +164,7 @@
     <ClInclude Include="input\KeyInput.h" />
     <ClInclude Include="input\MouseInput.h" />
     <ClInclude Include="PlayUnit.h" />
-    <ClInclude Include="Puyo.h" />
+    <ClInclude Include="Puyo\Puyo.h" />
     <ClInclude Include="SceneMng.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageMode\Drop.h" />

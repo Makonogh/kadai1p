@@ -1,8 +1,9 @@
 #pragma once
+#include "../Stage.h"
 
 struct Munyon
 {
-	void operator() ()
+	void operator() (Stage& stage)
 	{
 
 	}
