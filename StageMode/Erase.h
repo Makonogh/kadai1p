@@ -16,9 +16,9 @@ struct Erase
 		}
 		else
 		{
-			stage.PuyoInstance();
-			stage.stagemode_ = StageMode::Drop;
-			/*stage.stagemode_ = StageMode::Fall;*/
+			/*stage.PuyoInstance();*/
+			/*stage.stagemode_ = StageMode::Drop;*/
+			stage.stagemode_ = StageMode::Fall;
 		}
 	}
 

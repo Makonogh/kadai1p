@@ -2,6 +2,7 @@
 #include "input/Controller.h"
 #include "Stage.h"
 #include "_debug/_DebugConOut.h"
+#include "Puyo/OjamaPuyo.h"
 
 PlayUnit::PlayUnit(Stage& stage):stage_(stage)
 {
@@ -75,6 +76,15 @@ bool PlayUnit::Init()
 			if (cntData[InputID::BT2][static_cast<int>(Trg::Now)] && !cntData[InputID::BT2][static_cast<int>(Trg::Old)])
 			{
 				RotPuyo(stage_.puyoVec_[targetID_]->GetPos(), stage_.puyoVec_[targetID_ ^ 1]->GetPos(), false);
+			}
+		}
+	);
+	KeyAct.try_emplace(InputID::BT3, [&](CntData cntData)
+		{
+			if (cntData[InputID::BT3][static_cast<int>(Trg::Now)] && !cntData[InputID::BT3][static_cast<int>(Trg::Old)])
+			{
+				stage_.ojamaList_.emplace_back
+				(std::make_shared<OjamaPuyo>(Vector2(0 + (stage_.ojamaList_.size() % 7 ) * stage_.blockSize_,0 + (stage_.ojamaList_.size() / 7)), PuyoType::OJAMA));
 			}
 		}
 	);

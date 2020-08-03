@@ -51,8 +51,8 @@ bool SceneMng::Init(void)
 	}
 	frame_ = 0;
 
-	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2( 60, 48 )), std::move(Vector2(288, 576))));
-	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(700, 48 )), std::move(Vector2(288, 576))));
+	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2( 60, 80 )), std::move(Vector2(288, 576))));
+	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(700, 80 )), std::move(Vector2(288, 576))));
 
 	return false;
 }

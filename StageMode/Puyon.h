@@ -5,6 +5,6 @@ struct Puyon
 {
 	void operator() (Stage &stage)
 	{
-
+		stage.stagemode_ = StageMode::Munyon;
 	}
 };

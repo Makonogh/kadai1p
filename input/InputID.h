@@ -9,6 +9,7 @@ enum class InputID
 	RIGHT,
 	BT1,
 	BT2,
+	BT3,
 	MAX
 };
 

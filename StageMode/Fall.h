@@ -5,6 +5,6 @@ struct Fall
 {
 	void operator() (Stage& stage)
 	{
-
+		stage.stagemode_ = StageMode::Fall;
 	}
 };

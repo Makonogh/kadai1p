@@ -5,6 +5,8 @@
 #include "common/Vector2.h"
 #include <functional>
 #include "PlayUnit.h"
+#include "Puyo/OjamaPuyo.h"
+
 #include "StageMode/Drop.h"
 #include "StageMode/Erase.h"
 #include "StageMode/Munyon.h"
@@ -51,10 +53,17 @@ void Stage::Draw(void)
 	{
 		DrawLine(blockSize_ * x, 0, blockSize_ * x, size_.y, 0xffffff, false);
 	}
+	std::size_t size = ojamaList_.size();
+	
+	for (unsigned int t = 0; t <size; t++)
+	{
+		DrawCircle(blockSize_ / 2 + blockSize_ * (t % 7), blockSize_ / 2, blockSize_ / 2, 0xffffff, true);
+	}
 	for (auto&& puyo : puyoVec_)
 	{
 		puyo->Draw();
 	}
+	DrawFormatString(blockSize_ / 2, blockSize_ / 2, 0x000000, "%d", size);
 }
 
 void Stage::Update(void)
@@ -149,9 +158,15 @@ bool Stage::Init(void)
 bool Stage::PuyoInstance()
 {
 	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, 0), id));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_shared<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(), std::make_unique<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	puyoVec_.emplace(puyoVec_.begin(), std::make_shared<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	return false;
+}
+
+bool Stage::OjamaInstance(std::shared_ptr<Puyo>& puyo)
+{
+	puyoVec_.emplace(puyoVec_.begin(),std::make_shared<OjamaPuyo>(puyo->GetPos(),PuyoType::OJAMA));
 	return false;
 }
 

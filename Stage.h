@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <functional>
+#include <list>
 
 #define STAGE_CHIP_X 8
 #define STAGE_CHIP_Y 14
@@ -39,6 +40,7 @@ public:
 private:
 	bool Init(void);									// 初期化関数
 	bool PuyoInstance();								// ぷよの生成
+	bool OjamaInstance(std::shared_ptr<Puyo>& puyo);	// おじゃまぷよの生成
 	bool SetPermition(std::shared_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
 	Vector2 GetGrid(Vector2 pos);						// 座標からグリッド求める関数
 
@@ -52,6 +54,7 @@ private:
 
 	std::vector<std::shared_ptr<Puyo>> eraseBaseData_;	// ぷよの配置情報を格納する変数 (縦×横)	
 	std::vector<std::shared_ptr<Puyo>*> eraseData_;		// ぷよの配置情報の一次変数(横)
+	std::list<std::shared_ptr<Puyo>> ojamaList_;
 
 	Vector2 offset_;								// ステージのオフセット
 	Vector2 size_;									// ステージのサイズ	
@@ -66,7 +69,7 @@ private:
 	friend Drop;
 	friend Erase;
 	friend Munyon;
-	friend Puyo;
+	friend Puyon;
 	friend Fall;
 };		
 
