@@ -149,6 +149,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="input\MouseInput.cpp" />
     <ClCompile Include="Puyo\OjamaPuyo.cpp" />
+    <ClCompile Include="Puyo\OjamaPuyo.cpp" />
     <ClCompile Include="PlayUnit.cpp" />
     <ClCompile Include="Puyo\Puyo.cpp" />
     <ClCompile Include="SceneMng.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="input\GamePad.h" />
     <ClInclude Include="input\KeyInput.h" />
     <ClInclude Include="input\MouseInput.h" />
+    <ClInclude Include="Puyo\OjamaPuyo.h" />
     <ClInclude Include="Puyo\OjamaPuyo.h" />
     <ClInclude Include="PlayUnit.h" />
     <ClInclude Include="Puyo\Puyo.h" />
