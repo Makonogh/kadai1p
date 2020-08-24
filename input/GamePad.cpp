@@ -9,14 +9,22 @@ ContType GamePad::GetType(void)
 bool GamePad::Setup(int no)
 {
 	_connection = GetJoypadNum();
-	_id = DX_INPUT_PAD1;
+	if (no == 0)
+	{
+		_id = DX_INPUT_PAD1;
+	}
+	else
+	{
+		_id = DX_INPUT_PAD2;
+	}
 	_inputTbl = {
 					{InputID::UP,PAD_INPUT_UP},
 					{InputID::DOWN,PAD_INPUT_DOWN},
 					{InputID::LEFT,PAD_INPUT_LEFT},
 					{InputID::RIGHT,PAD_INPUT_RIGHT},
 					{InputID::BT1,PAD_INPUT_1},
-					{InputID::BT2,PAD_INPUT_2}
+					{InputID::BT2,PAD_INPUT_2},
+					{InputID::BT4,PAD_INPUT_3}
 				};
 	return false;
 }

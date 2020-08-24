@@ -42,7 +42,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -75,6 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>$(DXLIB_DIR);$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -104,10 +105,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(DXLIB_DIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(DXLIB_DIR)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,14 +148,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="input\GamePad.cpp" />
     <ClCompile Include="input\KeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="input\MouseInput.cpp" />
+    <ClCompile Include="NextMng.cpp" />
     <ClCompile Include="Puyo\OjamaPuyo.cpp" />
-    <ClCompile Include="Puyo\OjamaPuyo.cpp" />
-    <ClCompile Include="PlayUnit.cpp" />
     <ClCompile Include="Puyo\Puyo.cpp" />
+    <ClCompile Include="PlayUnit.cpp" />
     <ClCompile Include="SceneMng.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="_debug\_DebugConOut.cpp" />
@@ -160,15 +165,16 @@
   <ItemGroup>
     <ClInclude Include="common\details\Vector2.h" />
     <ClInclude Include="common\Vector2.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="input\InputID.h" />
     <ClInclude Include="input\Controller.h" />
     <ClInclude Include="input\GamePad.h" />
     <ClInclude Include="input\KeyInput.h" />
     <ClInclude Include="input\MouseInput.h" />
+    <ClInclude Include="NextMng.h" />
     <ClInclude Include="Puyo\OjamaPuyo.h" />
-    <ClInclude Include="Puyo\OjamaPuyo.h" />
-    <ClInclude Include="PlayUnit.h" />
     <ClInclude Include="Puyo\Puyo.h" />
+    <ClInclude Include="PlayUnit.h" />
     <ClInclude Include="SceneMng.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageMode\Drop.h" />

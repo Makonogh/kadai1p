@@ -2,10 +2,12 @@
 #include <DxLib.h>
 #include <algorithm>
 #include "Input/KeyInput.h"
+#include "Input/GamePad.h"
 #include "common/Vector2.h"
 #include <functional>
 #include "PlayUnit.h"
 #include "Puyo/OjamaPuyo.h"
+#include "Effect.h"
 
 #include "StageMode/Drop.h"
 #include "StageMode/Erase.h"
@@ -114,6 +116,11 @@ void Stage::Update(void)
 	Draw();
 }
 
+Vector2 Stage::GetWorPos(Vector2 pos)
+{
+	return pos + offset_;
+}
+
 bool Stage::Init(void)
 {
 	screenID_ = MakeScreen(size_.x, size_.y, true);
@@ -140,6 +147,7 @@ bool Stage::Init(void)
 		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
 	
+	
 	PuyoInstance();
 
 	controller_ = std::make_unique<KeyInput>();
@@ -152,6 +160,7 @@ bool Stage::Init(void)
 	stageAct_.try_emplace(StageMode::Munyon, Munyon());
 	stageAct_.try_emplace(StageMode::Puyon, Puyon());
 
+	
 	return false;
 }
 
@@ -160,7 +169,9 @@ bool Stage::PuyoInstance()
 	auto id = static_cast<PuyoType>(GetRand(4));
 	puyoVec_.emplace(puyoVec_.begin(), std::make_shared<Puyo>(Vector2(blockSize_ * 4, 0), id));
 	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(), std::make_shared<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	puyoVec_.emplace(puyoVec_.begin() + 1, std::make_shared<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	SetPermition(puyoVec_[0]);
+	SetPermition(puyoVec_[1]);
 	return false;
 }
 
@@ -193,6 +204,20 @@ bool Stage::SetPermition(std::shared_ptr<Puyo>& puyo)
 	}
 	puyo->SetDirPermit(dirPermit);
 	return true;
+}
+
+void Stage::SetGamePad()
+{
+	controller_.reset();
+	controller_ = std::make_unique<GamePad>();
+	controller_->Setup(id_);
+}
+
+void Stage::SetKeyInput()
+{
+	controller_.reset();
+	controller_ = std::make_unique<KeyInput>();
+	controller_->Setup(id_);
 }
 
 Vector2 Stage::GetGrid(Vector2 pos)

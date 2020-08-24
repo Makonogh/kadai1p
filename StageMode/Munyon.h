@@ -25,7 +25,7 @@ struct Munyon
 						break;
 					}
 				}
-				stage.ojamaList_.erase();
+				/*stage.ojamaList_.erase();*/
 			}
 			else
 			{

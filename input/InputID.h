@@ -10,6 +10,7 @@ enum class InputID
 	BT1,
 	BT2,
 	BT3,
+	BT4,
 	MAX
 };
 

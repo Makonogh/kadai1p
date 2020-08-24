@@ -2,6 +2,7 @@
 #include "common/Vector2.h"
 #include "input/Controller.h"
 #include "Puyo/Puyo.h"
+#include "NextMng.h"
 
 #include <memory>
 #include <vector>
@@ -37,11 +38,14 @@ public:
 	const Vector2& GetOffset(void);
 	void Draw(void);
 	void Update(void);
+	Vector2 GetWorPos(Vector2 pos);						// ワールド座標の取得
 private:
 	bool Init(void);									// 初期化関数
 	bool PuyoInstance();								// ぷよの生成
 	bool OjamaInstance(std::shared_ptr<Puyo>& puyo);	// おじゃまぷよの生成
 	bool SetPermition(std::shared_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
+	void SetGamePad();									// ゲームパッドの設定
+	void SetKeyInput();									// キーボードの設定
 	Vector2 GetGrid(Vector2 pos);						// 座標からグリッド求める関数
 
 	std::vector<std::shared_ptr<Puyo>> puyoVec_;		// ぷよの情報を格納
@@ -54,7 +58,9 @@ private:
 
 	std::vector<std::shared_ptr<Puyo>> eraseBaseData_;	// ぷよの配置情報を格納する変数 (縦×横)	
 	std::vector<std::shared_ptr<Puyo>*> eraseData_;		// ぷよの配置情報の一次変数(横)
-	std::list<std::shared_ptr<Puyo>> ojamaList_;
+	std::list<std::shared_ptr<Puyo>> ojamaList_;		// おじゃまぷよの格納
+
+	std::unique_ptr<NextMng> NextList;
 
 	Vector2 offset_;								// ステージのオフセット
 	Vector2 size_;									// ステージのサイズ	
