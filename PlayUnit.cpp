@@ -24,7 +24,7 @@ bool PlayUnit::Update()
 	}
 	if (CheckBady(0, !stage_.puyoVec_[0 ^ 1]->GetDirPermit().perBit.d) || CheckBady(1, !stage_.puyoVec_[1 ^ 1]->GetDirPermit().perBit.d))
 	{
-		stage_.puyoVec_[targetID_]->ChangeSpeed(48);
+		
 		targetID_ = 0;
 		
 		return true;
@@ -183,6 +183,7 @@ bool PlayUnit::CheckBady(int id, int bit)
 {
 	if (bit)
 	{
+		stage_.puyoVec_[id]->ChangeSpeed(6);
 		stage_.stagemode_ = StageMode::Fall;
 		return true;
 	}

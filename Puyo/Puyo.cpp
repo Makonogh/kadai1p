@@ -112,7 +112,7 @@ bool Puyo::GetAlive(void)
 void Puyo::ChangeSpeed(int t)
 {
 	dropLen_ = t;
-	puyoFrame_ = dropSpeed_;
+	dropSpeed_ = 0;
 }
 
 Vector2 Puyo::GetPos(void)
@@ -124,6 +124,11 @@ Vector2 Puyo::SetPos(Vector2 pos)
 {
 	pos_ = pos;
 	return pos_;
+}
+
+int Puyo::GetColor_(PuyoType type)
+{
+	return color_[type];
 }
 
 void Puyo::Init()

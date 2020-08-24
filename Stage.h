@@ -35,6 +35,7 @@ public:
 	Stage(Vector2&& offset,Vector2&& size);
 	~Stage();
 	int GetStageDraw(void);
+	std::pair<int,Vector2> GetNextScreen();
 	const Vector2& GetOffset(void);
 	void Draw(void);
 	void Update(void);
@@ -60,9 +61,9 @@ private:
 	std::vector<std::shared_ptr<Puyo>*> eraseData_;		// ぷよの配置情報の一次変数(横)
 	std::list<std::shared_ptr<Puyo>> ojamaList_;		// おじゃまぷよの格納
 
-	std::unique_ptr<NextMng> NextList;
+	std::unique_ptr<NextMng> NextList_;					// NextMngの格納
 
-	Vector2 offset_;								// ステージのオフセット
+	Vector2 wpos_;									// ステージのオフセット(ワールド座標)
 	Vector2 size_;									// ステージのサイズ	
 	int screenID_;									// 描画先のスクリーンのバンドル
 	static int stageCount_;							// ステージの生成回数(オブジェクトではなくクラス自体の)

@@ -49,6 +49,7 @@ public:
 	void ChangeSpeed(int t);				// スピード変更用の関数
 	Vector2 GetPos(void);					// ぷよの座標の取得
 	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
+	int GetColor_(PuyoType type);			// カラーの取得
 private:
 	void Init();							// ぷよの初期化関数
 	std::map<PuyoType,int> color_;			// ぷよのタイプとカラー

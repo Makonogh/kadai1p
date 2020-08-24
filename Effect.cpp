@@ -11,6 +11,7 @@ void Effect::Draw()
 	{
 		playingList_.emplace_back(PlayEffekseer2DEffect(effectList_[data.first]));
 		SetPosPlayingEffekseer2DEffect(playingList_.back(), data.second.x, data.second.y, 0);
+		SetSpeedPlayingEffekseer2DEffect(playingList_.back(), 5.0);
 	}
 	playList_.clear();
 }
@@ -26,7 +27,7 @@ void Effect::Update()
 			return IsEffekseer2DEffectPlaying(data); })
 			, playingList_.end());
 	}
-	TRACE("%d", playingList_.size());
+	//TRACE("%d", playingList_.size());
 }
 
 Effect::Effect()

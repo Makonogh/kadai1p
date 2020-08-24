@@ -19,7 +19,7 @@ int Stage::stageCount_ = 0;
 Stage::Stage(Vector2&& offset,Vector2&& size)
 {
 	id_ = stageCount_;
-	Stage::offset_ = offset;
+	Stage::wpos_ = offset;
 	Stage::size_ = size;
 	blockSize_ = size.x / (STAGE_CHIP_X - 2);
 	stageCount_++;
@@ -36,9 +36,14 @@ int Stage::GetStageDraw(void)
 	return screenID_;
 }
 
+std::pair<int, Vector2> Stage::GetNextScreen()
+{
+	return { NextList_->GetScreenID(), NextList_->GetPos()};
+}
+
 const Vector2& Stage::GetOffset(void)
 {
-	return offset_;
+	return wpos_;
 }
 
 void Stage::Draw(void)
@@ -47,14 +52,14 @@ void Stage::Draw(void)
 	ClsDrawScreen();
 	DrawBox(0, 0,  size_.x, size_.y, 0xffffff, false);
 
-	for (int x = 1; x <= 11; x++)
-	{
-		DrawLine(0,  blockSize_ * x, size_.x, blockSize_ * x, 0xffffff, false);
-	}
-	for (int x = 1; x <= 5; x++)
-	{
-		DrawLine(blockSize_ * x, 0, blockSize_ * x, size_.y, 0xffffff, false);
-	}
+	//for (int x = 1; x <= 11; x++)
+	//{
+	//	DrawLine(0,  blockSize_ * x, size_.x, blockSize_ * x, 0xffffff, false);
+	//}
+	//for (int x = 1; x <= 5; x++)
+	//{
+	//	DrawLine(blockSize_ * x, 0, blockSize_ * x, size_.y, 0xffffff, false);
+	//}
 	std::size_t size = ojamaList_.size();
 	
 	for (unsigned int t = 0; t <size; t++)
@@ -65,7 +70,8 @@ void Stage::Draw(void)
 	{
 		puyo->Draw();
 	}
-	DrawFormatString(blockSize_ / 2, blockSize_ / 2, 0x000000, "%d", size);
+
+	NextList_->Draw();
 }
 
 void Stage::Update(void)
@@ -73,52 +79,13 @@ void Stage::Update(void)
 	(*controller_)();
 	
 	stageAct_[stagemode_](*this);
-	//std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
-	//	{
-	//		SetPermition(puyo);
-	//	}
-	//);
-	//playUnit_->Update();
-	//bool rensaFlag = true;
-	//std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::unique_ptr<Puyo>& puyo)
-	//	{
-	//		if (!puyo->Update())
-	//		{
-	//			rensaFlag = false;
-	//		}
-	//	}
-	//);
-	/*if (rensaFlag)
-	{
-		stagemode_ = StageMode::RENSA;
-	}
 
-	if (stagemode_ == StageMode::RENSA)
-	{
-
-	}*/
-	/*if (!(puyoVec_[0]->Update()))
-	{
-		auto vec = puyoVec_[0]->GetGrid(blockSize_);
-		data_[vec.x][vec.y] = puyoVec_[0]->GetPuyoID();
-		EraseSet();
-		for (auto&& puyo: puyoVec_)
-		{
-			auto pos = puyo->GetGrid(blockSize_);
-			if (eraseData_[pos.x][pos.y] != PuyoType::NON)
-			{
-				puyo->SetAlive(false);
-				data_[pos.x][pos.y] = PuyoType::NON;
-			}
-		}
-	}*/
-	/*PuyoInstance();*/
 	Draw();
 }
 
 Vector2 Stage::GetWorPos(Vector2 pos)
 {
-	return pos + offset_;
+	return pos + wpos_;
 }
 
 bool Stage::Init(void)
@@ -147,7 +114,7 @@ bool Stage::Init(void)
 		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
 	
-	
+	NextList_ = std::make_unique<NextMng>(Vector2( wpos_.x + size_.x + blockSize_,wpos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
 	controller_ = std::make_unique<KeyInput>();
@@ -166,10 +133,11 @@ bool Stage::Init(void)
 
 bool Stage::PuyoInstance()
 {
-	auto id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin(), std::make_shared<Puyo>(Vector2(blockSize_ * 4, 0), id));
-	id = static_cast<PuyoType>(GetRand(4));
-	puyoVec_.emplace(puyoVec_.begin() + 1, std::make_shared<Puyo>(Vector2(blockSize_ * 4, blockSize_), id));
+	puyoVec_.emplace(puyoVec_.begin(), NextList_->TakePuyo().first);
+	puyoVec_.emplace(puyoVec_.begin() + 1, NextList_->TakePuyo().second);
+	NextList_->UpDateList();
+	puyoVec_[0]->SetPos({ blockSize_ * 3 ,blockSize_});
+	puyoVec_[1]->SetPos({ blockSize_ * 3 ,0});
 	SetPermition(puyoVec_[0]);
 	SetPermition(puyoVec_[1]);
 	return false;

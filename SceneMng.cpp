@@ -14,10 +14,6 @@ void SceneMng::Run(void)
 		{
 			stage->Update();
 		}
-		//if(frame_ % 60 == 0)
-		//{ 
-		//	lpEff.playList_.push_back({ "”j‰ó", {620,360} });
-		//}
 		Draw();
 		
 		frame_++;
@@ -39,8 +35,10 @@ void SceneMng::Draw(void)
 	ClsDrawScreen();
 	for (auto&& stage : playStage_)
 	{
-		Vector2 pos = stage->GetOffset();
-		DrawGraph(pos.x,pos.y,stage->GetStageDraw(),true);
+		Vector2 pos1 = stage->GetOffset();
+		Vector2 pos2 = stage->GetNextScreen().second;
+		DrawGraph(pos1.x, pos1.y,stage->GetStageDraw(),true);
+		DrawGraph(pos2.x, pos2.y, stage->GetNextScreen().first,true);
 	}
 	
 	lpEff.Draw();
