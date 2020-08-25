@@ -3,6 +3,7 @@
 #include <memory>
 #include <mutex>
 #include "Stage.h"
+#include <cassert>
 
 #define lpSceneMng SceneMng::GetInstance()
 
@@ -13,7 +14,7 @@ public:
 	{
 		static std::once_flag once;
 		std::call_once(once, Create);
-		return (*s_instance);
+		return *s_instance;
 	}
 
 	static void Create()
@@ -30,6 +31,7 @@ public:
 		s_instance = nullptr;
 	}
 	void Run(void);
+	const Vector2 screenSize_;
 private:
 	SceneMng();
 	~SceneMng();
@@ -37,8 +39,8 @@ private:
 	bool Init(void);
 
 	std::vector<std::unique_ptr<Stage>> playStage_;
-
+	
 	int frame_;
-	static SceneMng* s_instance;
+	static SceneMng *s_instance;
 };
 

@@ -51,11 +51,12 @@ public:
 	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
 	int GetColor_(PuyoType type);			// カラーの取得
 private:
-	void Init();							// ぷよの初期化関数
+	void Init();							// ぷよの初期化関
 	std::map<PuyoType,int> color_;			// ぷよのタイプとカラー
 	DirPermit dirPermit_;					// 上下左右のﾋﾞｯﾄﾌｨｰﾙﾄﾞ
 	const int size_;						// ｻｲｽﾞ
 	Vector2 pos_;							// 座標
+	int PuyoImage;							// ぷよの画像格納変数
 	int dropSpeed_;							// 落ちる速度
 	int dropLen_;							// ドロップの落ちる幅
 	int softdrop_;							// ソフトドロップ

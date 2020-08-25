@@ -139,14 +139,19 @@ void Puyo::Init()
 	puyoFrame_ = 0;
 	dropLen_ = 4;
 	alive_ = true;
-	color_.try_emplace(PuyoType::RED,0xff0000);
-	color_.try_emplace(PuyoType::GREEN,0x00ff00);
-	color_.try_emplace(PuyoType::YELLOW,0xffff00);
-	color_.try_emplace(PuyoType::BLUE,0x0000ff);
-	color_.try_emplace(PuyoType::PURPLE,0xff00ff);
+
+	PuyoImage = LoadGraph("image/puyo.png",true);
+
+	color_.try_emplace(PuyoType::RED, 0);
+	color_.try_emplace(PuyoType::GREEN, 1);
+	color_.try_emplace(PuyoType::YELLOW, 2);
+	color_.try_emplace(PuyoType::BLUE, 3);
+	color_.try_emplace(PuyoType::PURPLE, 4);
 }
 
 void Puyo::Draw()
 {
-	DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);
+	/*DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);*/
+	DrawRectGraph(pos_.x, pos_.y,size_ * color_[type_], 0, size_, size_,PuyoImage, true, false);
+
 }

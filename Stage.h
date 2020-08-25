@@ -63,9 +63,14 @@ private:
 
 	std::unique_ptr<NextMng> NextList_;					// NextMngの格納
 
-	Vector2 wpos_;									// ステージのオフセット(ワールド座標)
+	Vector2 fieldPos_;								// プレイフィールドの座標（２画面分割なら１Pは（０，０）みたいな）
+	Vector2 fieldSize_;								// プレイフィールドのサイズ
+	Vector2 pos_;									// ステージのオフセット(ワールド座標)
 	Vector2 size_;									// ステージのサイズ	
+	Vector2 ojamaSize_;								// OjamaSize
 	int screenID_;									// 描画先のスクリーンのバンドル
+	int stageID_;									// ステージID
+	int ojamaID_;									// OjamaのID
 	static int stageCount_;							// ステージの生成回数(オブジェクトではなくクラス自体の)
 	int id_;										// ID
 	int blockSize_;									// 1ブロックのサイズ

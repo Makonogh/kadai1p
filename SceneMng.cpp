@@ -8,6 +8,7 @@ SceneMng* SceneMng::s_instance = nullptr;
 
 void SceneMng::Run(void)
 {
+	Init();
 	while (!ProcessMessage() && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 		for (auto&& stage : playStage_)
@@ -20,9 +21,9 @@ void SceneMng::Run(void)
 	}
 }
 
-SceneMng::SceneMng()
+SceneMng::SceneMng() : screenSize_({ 1280, 720 })
 {
-	Init();
+	
 }
 
 SceneMng::~SceneMng()
@@ -35,12 +36,9 @@ void SceneMng::Draw(void)
 	ClsDrawScreen();
 	for (auto&& stage : playStage_)
 	{
-		Vector2 pos1 = stage->GetOffset();
-		Vector2 pos2 = stage->GetNextScreen().second;
-		DrawGraph(pos1.x, pos1.y,stage->GetStageDraw(),true);
-		DrawGraph(pos2.x, pos2.y, stage->GetNextScreen().first,true);
+		Vector2 pos = stage->GetOffset();
+		DrawGraph(pos.x, pos.y,stage->GetStageDraw(),true);
 	}
-	
 	lpEff.Draw();
 	lpEff.Update();
 	ScreenFlip();
@@ -48,7 +46,8 @@ void SceneMng::Draw(void)
 
 bool SceneMng::Init(void)
 {
-	SetGraphMode(1280, 720, 16);
+	
+	SetGraphMode(screenSize_.x, screenSize_.y, 16);
 	ChangeWindowMode(true);
 	SetWindowText("Ç’ÇÊÇ’ÇÊ");
 	SetDrawScreen(DX_SCREEN_BACK);						//  ﬁØ∏ ﬁØÃßÇ…ê›íË
@@ -58,8 +57,8 @@ bool SceneMng::Init(void)
 	}
 	frame_ = 0;
 
-	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2( 60, 80 )), std::move(Vector2(288, 576))));
-	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(700, 80 )), std::move(Vector2(288, 576))));
+	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
+	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
 
-	return false;
+	return true;
 }

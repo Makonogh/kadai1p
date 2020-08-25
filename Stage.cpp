@@ -8,6 +8,7 @@
 #include "PlayUnit.h"
 #include "Puyo/OjamaPuyo.h"
 #include "Effect.h"
+#include "SceneMng.h"
 
 #include "StageMode/Drop.h"
 #include "StageMode/Erase.h"
@@ -19,9 +20,11 @@ int Stage::stageCount_ = 0;
 Stage::Stage(Vector2&& offset,Vector2&& size)
 {
 	id_ = stageCount_;
-	Stage::wpos_ = offset;
-	Stage::size_ = size;
+	pos_ = offset;
+	size_ = size;
 	blockSize_ = size.x / (STAGE_CHIP_X - 2);
+	fieldSize_ = { lpSceneMng.screenSize_.x / 2,lpSceneMng.screenSize_.y };
+	fieldPos_ = { id_ * fieldSize_.x,0 };
 	stageCount_++;
 	Init();
 }
@@ -43,15 +46,15 @@ std::pair<int, Vector2> Stage::GetNextScreen()
 
 const Vector2& Stage::GetOffset(void)
 {
-	return wpos_;
+	return fieldPos_;
 }
 
 void Stage::Draw(void)
 {
-	SetDrawScreen(screenID_);
+	SetDrawScreen(stageID_);
 	ClsDrawScreen();
-	DrawBox(0, 0,  size_.x, size_.y, 0xffffff, false);
 
+	DrawBox(0, 0,  size_.x, size_.y, 0xffffff, false);
 	//for (int x = 1; x <= 11; x++)
 	//{
 	//	DrawLine(0,  blockSize_ * x, size_.x, blockSize_ * x, 0xffffff, false);
@@ -60,18 +63,32 @@ void Stage::Draw(void)
 	//{
 	//	DrawLine(blockSize_ * x, 0, blockSize_ * x, size_.y, 0xffffff, false);
 	//}
-	std::size_t size = ojamaList_.size();
 	
-	for (unsigned int t = 0; t <size; t++)
-	{
-		DrawCircle(blockSize_ / 2 + blockSize_ * (t % 7), blockSize_ / 2, blockSize_ / 2, 0xffffff, true);
-	}
 	for (auto&& puyo : puyoVec_)
 	{
 		puyo->Draw();
 	}
 
+	SetDrawScreen(ojamaID_);
+	ClsDrawScreen();
+
+	std::size_t size = ojamaList_.size();
+
+	for (unsigned int t = 0; t < size; t++)
+	{
+		DrawCircle(blockSize_ / 2 + blockSize_ * (t % 7), blockSize_ / 2, blockSize_ / 2, 0xffffff, true);
+	}
+
 	NextList_->Draw();
+
+	SetDrawScreen(screenID_);
+	ClsDrawScreen();
+	Vector2 NePos = NextList_->GetPos();
+	int NeID = NextList_->GetScreenID();
+	DrawGraph(pos_.x, pos_.y, stageID_, true);
+	DrawGraph(pos_.x , pos_.y - blockSize_, ojamaID_, true);
+	DrawGraph(NePos.x, NePos.y, NeID, true);
+	
 }
 
 void Stage::Update(void)
@@ -85,12 +102,14 @@ void Stage::Update(void)
 
 Vector2 Stage::GetWorPos(Vector2 pos)
 {
-	return pos + wpos_;
+	return pos + pos_ + fieldPos_;
 }
 
 bool Stage::Init(void)
 {
-	screenID_ = MakeScreen(size_.x, size_.y, true);
+	screenID_ = MakeScreen(fieldSize_.x, fieldSize_.y, true);
+	stageID_ = MakeScreen(size_.x, size_.y, true);
+	ojamaID_ = MakeScreen(size_.x, blockSize_, true);
 	baseData_.resize(STAGE_CHIP_X* STAGE_CHIP_Y );
 	eraseBaseData_.resize(STAGE_CHIP_X * STAGE_CHIP_Y);
 
@@ -114,7 +133,7 @@ bool Stage::Init(void)
 		data_[STAGE_CHIP_X - 1][no] = std::make_shared<Puyo>(Vector2( 0,blockSize_ * no), PuyoType::WALL);;
 	}
 	
-	NextList_ = std::make_unique<NextMng>(Vector2( wpos_.x + size_.x + blockSize_,wpos_.y + blockSize_ ),blockSize_,id_);
+	NextList_ = std::make_unique<NextMng>(Vector2( pos_.x + size_.x + blockSize_,pos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
 	controller_ = std::make_unique<KeyInput>();
