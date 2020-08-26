@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include "_debug/_DebugConOut.h"
 #include "Puyo/OjamaPuyo.h"
+#include "DxLib.h"
 
 PlayUnit::PlayUnit(Stage& stage):stage_(stage)
 {
@@ -30,7 +31,6 @@ bool PlayUnit::Update()
 		return true;
 	}
 
-	/*TRACE("%d",targetID_);*/
 	return false;
 }
 
@@ -122,6 +122,15 @@ bool PlayUnit::Init()
 		}
 	);
 	return false;
+}
+
+void PlayUnit::StartVive(int pow,int time)
+{
+	if (stage_.controller_->GetType() == ContType::GamePad)
+	{
+		StopJoypadVibration(stage_.controller_->GetID());
+		StartJoypadVibration(stage_.controller_->GetID(), pow, time);
+	}
 }
 
 void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)

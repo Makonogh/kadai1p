@@ -54,21 +54,16 @@ void Stage::Draw(void)
 	SetDrawScreen(stageID_);
 	ClsDrawScreen();
 
-	DrawBox(0, 0,  size_.x, size_.y, 0xffffff, false);
-	//for (int x = 1; x <= 11; x++)
-	//{
-	//	DrawLine(0,  blockSize_ * x, size_.x, blockSize_ * x, 0xffffff, false);
-	//}
-	//for (int x = 1; x <= 5; x++)
-	//{
-	//	DrawLine(blockSize_ * x, 0, blockSize_ * x, size_.y, 0xffffff, false);
-	//}
-	
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);		//ブレンドモード
+	DrawBox(0, 0, size_.x, size_.y, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
+
+
 	for (auto&& puyo : puyoVec_)
 	{
 		puyo->Draw();
-	}
-
+	}	
+	DrawBox(0, 0, size_.x, size_.y, 0xffffff, false);
 	SetDrawScreen(ojamaID_);
 	ClsDrawScreen();
 
@@ -136,7 +131,7 @@ bool Stage::Init(void)
 	NextList_ = std::make_unique<NextMng>(Vector2( pos_.x + size_.x + blockSize_,pos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
-	controller_ = std::make_unique<KeyInput>();
+	SetGamePad();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
 	stagemode_ = StageMode::Drop;
@@ -146,6 +141,7 @@ bool Stage::Init(void)
 	stageAct_.try_emplace(StageMode::Munyon, Munyon());
 	stageAct_.try_emplace(StageMode::Puyon, Puyon());
 
+	
 	
 	return false;
 }

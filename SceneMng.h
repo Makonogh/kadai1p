@@ -41,6 +41,7 @@ private:
 	std::vector<std::unique_ptr<Stage>> playStage_;
 	
 	int frame_;
+	int backImage;									// ”wŒi‚Ì•`‰æ•Ï”
 	static SceneMng *s_instance;
 };
 

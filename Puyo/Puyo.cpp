@@ -1,5 +1,6 @@
 #include "Puyo.h"
 #include "DxLib.h"
+#include "../_debug/_DebugConOut.h"
 
 Puyo::Puyo() :size_(48)
 {
@@ -106,7 +107,33 @@ void Puyo::SetAlive(bool alive)
 
 bool Puyo::GetAlive(void)
 {
-	return alive_;
+	if (alive_)
+	{
+		return true;
+	}
+	else
+	{
+		if (dethCount_ >= 20)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+}
+
+void Puyo::DethCount(void)
+{
+	if (!alive_)
+	{
+		dethCount_++;
+	}
+	else
+	{
+		dethCount_ = 0;
+	};
 }
 
 void Puyo::ChangeSpeed(int t)
@@ -138,6 +165,7 @@ void Puyo::Init()
 	softdrop_ = 5;
 	puyoFrame_ = 0;
 	dropLen_ = 4;
+	dethCount_ = 0;
 	alive_ = true;
 
 	PuyoImage = LoadGraph("image/puyo.png",true);
@@ -152,6 +180,8 @@ void Puyo::Init()
 void Puyo::Draw()
 {
 	/*DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);*/
-	DrawRectGraph(pos_.x, pos_.y,size_ * color_[type_], 0, size_, size_,PuyoImage, true, false);
-
+	if (dethCount_ % 3 == 0)
+	{
+		DrawRectGraph(pos_.x, pos_.y, size_ * color_[type_], 0, size_, size_, PuyoImage, true, false);
+	}
 }

@@ -23,6 +23,7 @@ struct Fall
 
 		if (EraseFlag)
 		{
+			stage.playUnit_->StartVive(200, 100);
 			stage.stagemode_ = StageMode::Erase;
 		}
 		std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)			// ƒf[ƒ^‚ÉŠi”[

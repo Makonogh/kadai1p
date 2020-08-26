@@ -48,3 +48,8 @@ bool KeyInput::Update(void)
     }
     return true;
 }
+
+int KeyInput::GetID(void)
+{
+    return 0;
+}

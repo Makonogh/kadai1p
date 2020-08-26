@@ -9,7 +9,7 @@ public:
 	~PlayUnit();
 	bool Update();
 	bool Init();
-	
+	void StartVive(int pow,int time);
 private:
 	Stage& stage_;
 	void RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate);

@@ -43,3 +43,8 @@ bool GamePad::Update(void)
 	}
 	return true;
 }
+
+int GamePad::GetID(void)
+{
+	return _id;
+}

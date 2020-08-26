@@ -46,6 +46,7 @@ public:
 	void SoftDrop(void);					// ソフトドロップ関数
 	void SetAlive(bool alive);				// 死の宣告(消していいかフラグ)
 	bool GetAlive(void);					// フラグの取得
+	void DethCount(void);						// 死の宣告のカウントゲット関数
 	void ChangeSpeed(int t);				// スピード変更用の関数
 	Vector2 GetPos(void);					// ぷよの座標の取得
 	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
@@ -63,5 +64,6 @@ private:
 	bool alive_;							// 死の宣告
 	PuyoType type_;							// ぷよのタイプ格納
 	int puyoFrame_;							// ぷよのフレームカウント
+	int dethCount_;							// ぷよの死の宣告食らった後のカウント
 };
 

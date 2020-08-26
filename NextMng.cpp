@@ -67,9 +67,14 @@ void NextMng::Draw()
 {
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
-	DrawBox(0, 0, size_.x, size_.y, 0xffffff, false);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);		//ブレンドモード
+	DrawBox(0, 0, size_.x, size_.y, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
+
 	for (int x = 0; x < 4; x++)
 	{
 		puyoList_[x]->Draw();
 	}
+
+	DrawBox(0, 0, size_.x, size_.y, 0xffffff, false);
 }

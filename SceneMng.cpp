@@ -34,6 +34,7 @@ void SceneMng::Draw(void)
 {
 	SetDrawScreen(DX_SCREEN_BACK);
 	ClsDrawScreen();
+	DrawGraph(0, 0, backImage, true);
 	for (auto&& stage : playStage_)
 	{
 		Vector2 pos = stage->GetOffset();
@@ -56,7 +57,7 @@ bool SceneMng::Init(void)
 		return false;
 	}
 	frame_ = 0;
-
+	backImage = LoadGraph("image/back.png", true);
 	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
 	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
 

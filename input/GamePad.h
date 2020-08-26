@@ -7,6 +7,7 @@ struct GamePad:
     ContType GetType(void) override;
     bool Setup(int no) override;
     bool Update(void) override;
+    int GetID(void) override;
 private:
     std::map<InputID, int> _inputTbl;
     int _padInput;                      // ƒpƒbƒh‚Ì“ü—Íî•ñ

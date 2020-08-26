@@ -35,6 +35,7 @@ struct Controller
 	}
 	virtual ContType GetType(void) = 0;
 	virtual bool Setup(int no) = 0;
+	virtual int GetID(void) = 0;
 private:
 	virtual bool Update(void) = 0;
 protected:
