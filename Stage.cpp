@@ -55,7 +55,7 @@ void Stage::Draw(void)
 	ClsDrawScreen();
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);		//ブレンドモード
-	DrawBox(0, 0, size_.x, size_.y, 0x000000, true);
+	DrawBox(0, 0, size_.x, size_.y, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
 
 
@@ -151,8 +151,11 @@ bool Stage::PuyoInstance()
 	puyoVec_.emplace(puyoVec_.begin(), NextList_->TakePuyo().first);
 	puyoVec_.emplace(puyoVec_.begin() + 1, NextList_->TakePuyo().second);
 	NextList_->UpDateList();
-	puyoVec_[0]->SetPos({ blockSize_ * 3 ,blockSize_});
-	puyoVec_[1]->SetPos({ blockSize_ * 3 ,0});
+	puyoVec_[0]->SetPos({ blockSize_ * 3 ,0 });
+	puyoVec_[1]->SetPos({ blockSize_ * 3 ,blockSize_});
+	
+	puyoVec_[0]->SetLead(1);
+	puyoVec_[1]->SetLead(2);
 	SetPermition(puyoVec_[0]);
 	SetPermition(puyoVec_[1]);
 	return false;
@@ -187,6 +190,44 @@ bool Stage::SetPermition(std::shared_ptr<Puyo>& puyo)
 	}
 	puyo->SetDirPermit(dirPermit);
 	return true;
+}
+
+void Stage::GetSpuyo()
+{
+	int spos1 = 0;
+	int spos2 = 0;
+	Vector2 pos1 = puyoVec_[0]->GetGrid(blockSize_);
+	Vector2 pos2 = puyoVec_[1]->GetGrid(blockSize_);
+	
+	for (int p = pos1.y;p <= STAGE_CHIP_Y;p++)
+	{
+		if (data_[pos1.x][p + 1])
+		{
+			spos1 = p;
+			break;
+		}
+	}
+	for (int p = pos2.y; p <= STAGE_CHIP_Y; p++)
+	{
+		if (data_[pos2.x][p + 1])
+		{
+			spos2 = p;
+			break;
+		}
+	}
+	if (pos1.x == pos2.x)
+	{
+		if (pos1.y > pos2.y)
+		{
+			spos2--;
+		}
+		else
+		{
+			spos1--;
+		}
+	}
+	puyoVec_[0]->SetSpos(spos1);
+	puyoVec_[1]->SetSpos(spos2);
 }
 
 void Stage::SetGamePad()

@@ -46,7 +46,9 @@ public:
 	void SoftDrop(void);					// ソフトドロップ関数
 	void SetAlive(bool alive);				// 死の宣告(消していいかフラグ)
 	bool GetAlive(void);					// フラグの取得
-	void DethCount(void);						// 死の宣告のカウントゲット関数
+	void DethCount(void);					// 死の宣告のカウントする関数
+	void SetLead(int x);					// 操作ぷよのセット
+	void SetSpos(int y);					// ステルスぷよの座標セット
 	void ChangeSpeed(int t);				// スピード変更用の関数
 	Vector2 GetPos(void);					// ぷよの座標の取得
 	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
@@ -57,13 +59,16 @@ private:
 	DirPermit dirPermit_;					// 上下左右のﾋﾞｯﾄﾌｨｰﾙﾄﾞ
 	const int size_;						// ｻｲｽﾞ
 	Vector2 pos_;							// 座標
+	int spos_y;								// ステルスぷよのY座標(予兆だす座標)
 	int PuyoImage;							// ぷよの画像格納変数
 	int dropSpeed_;							// 落ちる速度
 	int dropLen_;							// ドロップの落ちる幅
 	int softdrop_;							// ソフトドロップ
 	bool alive_;							// 死の宣告
+	int lead_;								// リード（操作対象1,付属ぷよ2,そのほか(すでに着地済みなど)0,になる変数））
 	PuyoType type_;							// ぷよのタイプ格納
 	int puyoFrame_;							// ぷよのフレームカウント
 	int dethCount_;							// ぷよの死の宣告食らった後のカウント
+	int puyoCount_;							// ぷよ独自のカウント（生成されてから消されるまでカウントし続ける（アニメーションに使えるかなと））
 };
 

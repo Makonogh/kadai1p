@@ -30,7 +30,7 @@ bool PlayUnit::Update()
 		
 		return true;
 	}
-
+	stage_.GetSpuyo();
 	return false;
 }
 

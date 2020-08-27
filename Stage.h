@@ -45,8 +45,9 @@ private:
 	bool PuyoInstance();								// ぷよの生成
 	bool OjamaInstance(std::shared_ptr<Puyo>& puyo);	// おじゃまぷよの生成
 	bool SetPermition(std::shared_ptr<Puyo>& puyo);	 	// ぷよのパーミッション設定
-	void SetGamePad();									// ゲームパッドの設定
-	void SetKeyInput();									// キーボードの設定
+	void GetSpuyo(void);			// ステルスぷよを探す関数
+	void SetGamePad(void);								// ゲームパッドの設定
+	void SetKeyInput(void);								// キーボードの設定
 	Vector2 GetGrid(Vector2 pos);						// 座標からグリッド求める関数
 
 	std::vector<std::shared_ptr<Puyo>> puyoVec_;		// ぷよの情報を格納

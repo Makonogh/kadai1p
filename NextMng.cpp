@@ -36,7 +36,7 @@ void NextMng::UpDateList()
 	puyoList_.emplace_back(std::make_shared<Puyo>(Vector2(0, 0), id));
 	for (int x = 0; x < 4; x++)
 	{
-		puyoList_[x]->SetPos({ blockSize_ * (x / 2),blockSize_ * ((x / 2) + ((x + 1) % 2)) });
+		puyoList_[x]->SetPos({ blockSize_ * (x / 2),blockSize_ * ((x / 2) + (x % 2)) });
 	}
 	TRACE("%d", puyoList_.size());
 }
@@ -68,7 +68,7 @@ void NextMng::Draw()
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);		//ブレンドモード
-	DrawBox(0, 0, size_.x, size_.y, 0x000000, true);
+	DrawBox(0, 0, size_.x, size_.y, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
 
 	for (int x = 0; x < 4; x++)

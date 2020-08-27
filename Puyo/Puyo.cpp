@@ -4,6 +4,10 @@
 
 Puyo::Puyo() :size_(48)
 {
+	pos_.y = 0;
+	pos_.x = 0;
+	type_ = PuyoType::RED;
+	Init();
 }
 
 Puyo::Puyo(Vector2 pos, PuyoType type):size_(48)
@@ -21,6 +25,7 @@ Puyo::~Puyo()
 
 bool Puyo::Update()
 {
+	puyoCount_++;
 	if (dirPermit_.perBit.d == 1)
 	{
 		if (puyoFrame_ < dropSpeed_ )
@@ -136,6 +141,16 @@ void Puyo::DethCount(void)
 	};
 }
 
+void Puyo::SetLead(int x)
+{
+	lead_ = x;
+}
+
+void Puyo::SetSpos(int y)
+{
+	spos_y = y;
+}
+
 void Puyo::ChangeSpeed(int t)
 {
 	dropLen_ = t;
@@ -167,21 +182,37 @@ void Puyo::Init()
 	dropLen_ = 4;
 	dethCount_ = 0;
 	alive_ = true;
+	lead_ = 0;
+	spos_y = 0;
+	puyoCount_ = -1;
 
 	PuyoImage = LoadGraph("image/puyo.png",true);
 
-	color_.try_emplace(PuyoType::RED, 0);
-	color_.try_emplace(PuyoType::GREEN, 1);
-	color_.try_emplace(PuyoType::YELLOW, 2);
-	color_.try_emplace(PuyoType::BLUE, 3);
-	color_.try_emplace(PuyoType::PURPLE, 4);
+	color_.try_emplace(PuyoType::RED, 0xff0000);
+	color_.try_emplace(PuyoType::GREEN, 0x00ff00);
+	color_.try_emplace(PuyoType::YELLOW, 0xffff00);
+	color_.try_emplace(PuyoType::BLUE, 0x0000ff);
+	color_.try_emplace(PuyoType::PURPLE, 0xff00ff);
 }
 
 void Puyo::Draw()
 {
 	/*DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);*/
+	if (lead_ != 0)
+	{
+		/*DrawRectGraph(pos_.x, (spos_y - 1) * size_, size_ * color_[type_], 0, size_, size_, PuyoImage, true, false);*/
+		DrawCircle(pos_.x + size_ / 2, (spos_y - 1) * size_ + size_ / 2, size_ / 5, color_[type_], true);
+	}
 	if (dethCount_ % 3 == 0)
 	{
-		DrawRectGraph(pos_.x, pos_.y, size_ * color_[type_], 0, size_, size_, PuyoImage, true, false);
+		if (lead_ == 1)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - puyoCount_  % 10);		//ブレンドモード
+			DrawRectGraph(pos_.x, pos_.y, size_ * static_cast<int>(type_), 0, size_, size_, PuyoImage, true, false);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
+		}
+		else {
+			DrawRectGraph(pos_.x, pos_.y, size_ * static_cast<int>(type_), 0, size_, size_, PuyoImage, true, false);
+		}
 	}
 }
