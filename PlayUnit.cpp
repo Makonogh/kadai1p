@@ -193,6 +193,7 @@ bool PlayUnit::CheckBady(int id, int bit)
 	if (bit)
 	{
 		stage_.puyoVec_[id]->ChangeSpeed(6);
+		stage_.puyoVec_[id]->SetLead(0);
 		stage_.stagemode_ = StageMode::Fall;
 		return true;
 	}

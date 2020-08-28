@@ -28,6 +28,7 @@ bool Puyo::Update()
 	puyoCount_++;
 	if (dirPermit_.perBit.d == 1)
 	{
+
 		if (puyoFrame_ < dropSpeed_ )
 		{
 			puyoFrame_++;
@@ -41,9 +42,34 @@ bool Puyo::Update()
 	}
 	else
 	{
+		
 		return true;
 	}
 	return false;
+}
+
+bool Puyo::PuyonUpdate(Vector2 Gpos)
+{
+	puyonFrame_++;
+	if (puyonFrame_ > 60)
+	{
+		puyon_ = false;
+		groZero_ = false;
+	}
+	if (groZero_)
+	{
+		pos_.y -= puyonFrame_;
+		return true;
+	}
+	if (puyon_)
+	{
+		return true;
+	}
+	else
+	{
+		puyonFrame_ = 0;
+		return false;
+	}
 }
 
 void Puyo::Move(InputID id)
@@ -151,6 +177,21 @@ void Puyo::SetSpos(int y)
 	spos_y = y;
 }
 
+void Puyo::SetPuyon(bool puyon)
+{
+	puyon_ = puyon;
+}
+
+void Puyo::SetGround(bool flag)
+{
+	groZero_ = flag;
+}
+
+bool Puyo::GetGround()
+{
+	return groZero_;
+}
+
 void Puyo::ChangeSpeed(int t)
 {
 	dropLen_ = t;
@@ -182,10 +223,12 @@ void Puyo::Init()
 	dropLen_ = 4;
 	dethCount_ = 0;
 	alive_ = true;
+	puyon_ = false;
+	groZero_ = false;
 	lead_ = 0;
 	spos_y = 0;
 	puyoCount_ = -1;
-
+	puyonFrame_ = 0;
 	PuyoImage = LoadGraph("image/puyo.png",true);
 
 	color_.try_emplace(PuyoType::RED, 0xff0000);
@@ -198,6 +241,7 @@ void Puyo::Init()
 void Puyo::Draw()
 {
 	/*DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);*/
+
 	if (lead_ != 0)
 	{
 		/*DrawRectGraph(pos_.x, (spos_y - 1) * size_, size_ * color_[type_], 0, size_, size_, PuyoImage, true, false);*/
@@ -205,14 +249,21 @@ void Puyo::Draw()
 	}
 	if (dethCount_ % 3 == 0)
 	{
+		DrawRectGraph(pos_.x, pos_.y, size_ * static_cast<int>(type_), 0, size_, size_, PuyoImage, true, false);
 		if (lead_ == 1)
 		{
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - puyoCount_  % 10);		//ブレンドモード
+			int alpha = 0;
+			if ((puyoCount_ / 30) % 2 == 0)
+			{
+				alpha = (puyoCount_ % 30) * 2;
+			}
+			else
+			{
+				alpha = (30 - puyoCount_ % 30) * 2;
+			}
+			SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);		//ブレンドモード
 			DrawRectGraph(pos_.x, pos_.y, size_ * static_cast<int>(type_), 0, size_, size_, PuyoImage, true, false);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
-		}
-		else {
-			DrawRectGraph(pos_.x, pos_.y, size_ * static_cast<int>(type_), 0, size_, size_, PuyoImage, true, false);
 		}
 	}
 }

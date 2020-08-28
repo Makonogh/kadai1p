@@ -11,8 +11,9 @@ struct Drop
 				stage.SetPermition(puyo);
 			}
 		);*/
-		stage.stageAct_[StageMode::Fall](stage);
 		stage.playUnit_->Update();
+		stage.stageAct_[StageMode::Fall](stage);
+		
 
 		//bool EraseFlag = false;						// íœÓ°ÄŞ‚ÉˆÚs‚·‚é‚©‚Ìƒtƒ‰ƒO
 		//std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)

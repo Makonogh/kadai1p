@@ -37,6 +37,7 @@ public:
 	Puyo(Vector2 pos,PuyoType type);
 	~Puyo();
 	bool Update();	
+	bool PuyonUpdate(Vector2 pos);
 	void Move(InputID id);					// Move関数
 	void Draw();							// ぷよの描画関数
 	void SetDirPermit(DirPermit DirPermit); // ぷよのﾋﾞｯﾄﾌｨｰﾙﾄﾞを格納する関数
@@ -49,6 +50,9 @@ public:
 	void DethCount(void);					// 死の宣告のカウントする関数
 	void SetLead(int x);					// 操作ぷよのセット
 	void SetSpos(int y);					// ステルスぷよの座標セット
+	void SetPuyon(bool puyon);				// ぷよんに設定
+	void SetGround(bool flag);
+	bool GetGround();
 	void ChangeSpeed(int t);				// スピード変更用の関数
 	Vector2 GetPos(void);					// ぷよの座標の取得
 	Vector2 SetPos(Vector2 pos);			// ぷよの座標のセット
@@ -65,9 +69,12 @@ private:
 	int dropLen_;							// ドロップの落ちる幅
 	int softdrop_;							// ソフトドロップ
 	bool alive_;							// 死の宣告
+	bool puyon_;							// ぷよん
+	bool groZero_;					    	// ぷよんの爆心地
 	int lead_;								// リード（操作対象1,付属ぷよ2,そのほか(すでに着地済みなど)0,になる変数））
 	PuyoType type_;							// ぷよのタイプ格納
 	int puyoFrame_;							// ぷよのフレームカウント
+	int puyonFrame_;						// ぷよんのカウント
 	int dethCount_;							// ぷよの死の宣告食らった後のカウント
 	int puyoCount_;							// ぷよ独自のカウント（生成されてから消されるまでカウントし続ける（アニメーションに使えるかなと））
 };

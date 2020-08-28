@@ -35,6 +35,7 @@ void SceneMng::Draw(void)
 	SetDrawScreen(DX_SCREEN_BACK);
 	ClsDrawScreen();
 	DrawGraph(0, 0, backImage, true);
+	/*DrawBox(0, 0, screenSize_.x, screenSize_.y, 0xffffff, true);*/
 	for (auto&& stage : playStage_)
 	{
 		Vector2 pos = stage->GetOffset();
