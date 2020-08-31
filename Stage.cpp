@@ -131,7 +131,7 @@ bool Stage::Init(void)
 	NextList_ = std::make_unique<NextMng>(Vector2( pos_.x + size_.x + blockSize_,pos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
-	SetGamePad();
+	SetKeyInput();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
 	stagemode_ = StageMode::Drop;

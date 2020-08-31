@@ -33,7 +33,7 @@ struct Fall
 				if (!puyo->GetDirPermit().perBit.d)
 				{
 					Vector2 vec = puyo->GetGrid(stage.blockSize_);
-					puyo->ChangeSpeed(6);
+					puyo->ChangeSpeed(12);
 					puyo->SetLead(0);
 					stage.data_[vec.x][vec.y] = puyo;
 					puyo->SetPos({ (vec.x - 1) * stage.blockSize_,(vec.y - 1) * stage.blockSize_ });

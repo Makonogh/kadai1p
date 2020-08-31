@@ -26,6 +26,7 @@ Puyo::~Puyo()
 bool Puyo::Update()
 {
 	puyoCount_++;
+
 	if (dirPermit_.perBit.d == 1)
 	{
 		if (puyoFrame_ < dropSpeed_ )
@@ -37,11 +38,14 @@ bool Puyo::Update()
 			pos_.y+= dropLen_;
 			puyoFrame_ = 0;
 		}
+		if (!fall_)
+		{
+			dropLen_ = 4;
+		}
 		return false;
 	}
 	else
 	{
-		
 		return true;
 	}
 	return false;
@@ -128,6 +132,7 @@ PuyoType Puyo::GetPuyoID()
 void Puyo::SoftDrop(void)
 {
 	puyoFrame_ = dropSpeed_;
+	dropLen_ = 12;
 }
 
 void Puyo::SetAlive(bool alive)
@@ -194,6 +199,7 @@ bool Puyo::GetGround()
 void Puyo::ChangeSpeed(int t)
 {
 	dropLen_ = t;
+	fall_ = true;
 	dropSpeed_ = 0;
 }
 
@@ -224,6 +230,7 @@ void Puyo::Init()
 	alive_ = true;
 	puyon_ = false;
 	groZero_ = false;
+	fall_ = false;
 	lead_ = 0;
 	spos_y = 0;
 	puyoCount_ = -1;

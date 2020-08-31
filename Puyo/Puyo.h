@@ -69,6 +69,7 @@ private:
 	int dropLen_;							// ドロップの落ちる幅
 	int softdrop_;							// ソフトドロップ
 	bool alive_;							// 死の宣告
+	bool fall_;
 	bool puyon_;							// ぷよん
 	bool groZero_;					    	// ぷよんの爆心地
 	int lead_;								// リード（操作対象1,付属ぷよ2,そのほか(すでに着地済みなど)0,になる変数））

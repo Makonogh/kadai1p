@@ -22,7 +22,7 @@ struct Erase
 						stage.SetPermition(puyo);
 					}
 				);
-				stage.playUnit_->StartVive(1000,500);
+				stage.playUnit_->StartVive(300,500);
 				stage.stagemode_ = StageMode::Fall;
 			}
 		}
