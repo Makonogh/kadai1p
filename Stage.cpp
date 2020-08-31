@@ -57,12 +57,11 @@ void Stage::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);		//ブレンドモード
 	DrawBox(0, 0, size_.x, size_.y, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);		//ブレンドモードをオフ
-
-
-	for (auto&& puyo : puyoVec_)
-	{
-		puyo->Draw();
-	}	
+	std::for_each(puyoVec_.rbegin(), puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)
+		{
+			puyo->Draw();
+		}
+	);
 	DrawBox(0, 0, size_.x, size_.y, 0xffffff, false);
 	SetDrawScreen(ojamaID_);
 	ClsDrawScreen();
@@ -131,7 +130,7 @@ bool Stage::Init(void)
 	NextList_ = std::make_unique<NextMng>(Vector2( pos_.x + size_.x + blockSize_,pos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
-	SetKeyInput();
+	SetGamePad();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
 	stagemode_ = StageMode::Drop;

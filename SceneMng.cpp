@@ -60,6 +60,6 @@ bool SceneMng::Init(void)
 	backImage = LoadGraph("image/back.png", true);
 	seed = (unsigned int)time(NULL);
 	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
-	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
+	/*playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));*/
 	return true;
 }

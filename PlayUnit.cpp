@@ -58,7 +58,7 @@ bool PlayUnit::Init()
 		{
 			if (cntData[InputID::LEFT][static_cast<int>(Trg::Now)] && !cntData[InputID::LEFT][static_cast<int>(Trg::Old)])
 			{
-				if (stage_.puyoVec_[0 ^ 1]->GetDirPermit().perBit.l&&stage_.puyoVec_[1 ^ 1]->GetDirPermit().perBit.l)
+				if (stage_.puyoVec_[0]->GetDirPermit().perBit.l&&stage_.puyoVec_[1]->GetDirPermit().perBit.l)
 				{
 					stage_.puyoVec_[0]->Move(InputID::LEFT);
 					stage_.puyoVec_[1]->Move(InputID::LEFT);
@@ -70,7 +70,7 @@ bool PlayUnit::Init()
 		{
 			if (cntData[InputID::RIGHT][static_cast<int>(Trg::Now)] && !cntData[InputID::RIGHT][static_cast<int>(Trg::Old)])
 			{
-				if (stage_.puyoVec_[0 ^ 1]->GetDirPermit().perBit.r && stage_.puyoVec_[1 ^ 1]->GetDirPermit().perBit.r)
+				if (stage_.puyoVec_[0]->GetDirPermit().perBit.r && stage_.puyoVec_[1]->GetDirPermit().perBit.r)
 				{
 					stage_.puyoVec_[0]->Move(InputID::RIGHT);
 					stage_.puyoVec_[1]->Move(InputID::RIGHT);
@@ -162,16 +162,14 @@ void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 	{
 		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen };
 	}
-
-	if (stage_.puyoVec_[targetID_]->GetPos().y < stage_.puyoVec_[targetID_ ^ 1]->GetPos().y)
-	{
-		std::swap(stage_.puyoVec_[targetID_], stage_.puyoVec_[targetID_ ^ 1]);
-		targetID_ ^= 1;
-	}
-
 	if (CheckMove(stage_.GetGrid(RotPos)))
 	{
 		stage_.puyoVec_[targetID_ ^ 1]->SetPos(RotPos);
+	}
+	if (stage_.puyoVec_[0]->GetPos().y > stage_.puyoVec_[1]->GetPos().y)
+	{
+		std::swap(stage_.puyoVec_[targetID_], stage_.puyoVec_[targetID_ ^ 1]);
+		targetID_ ^= 1;
 	}
 }
 

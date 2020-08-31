@@ -50,7 +50,6 @@ void NextMng::UpDateList()
 		}
 		count++;
 	}
-
 	TRACE("%d", puyoList_.size());
 }
 
@@ -59,7 +58,7 @@ void NextMng::Init(Vector2 pos,int size,int id)
 	blockSize_ = size;
 	size_ = {size * 1.5,size * 3.0};
 	screenID_ = MakeScreen(size_.x ,size_.y,true);
-	nextMax_ = 8;				// Ç©Ç»ÇÁÇ∏ãÙêîÇ…Ç∑ÇÈÇ±Ç∆
+	nextMax_ = 200;				// Ç©Ç»ÇÁÇ∏ãÙêîÇ…Ç∑ÇÈÇ±Ç∆
 	pos_ = pos;
 	id_ = id;
 	count = 0;
