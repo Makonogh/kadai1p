@@ -5,11 +5,13 @@ struct Fall
 {
 	void operator() (Stage& stage)
 	{
+		
 		std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)
 			{
 				stage.SetPermition(puyo);
 			}
 		);
+		
 		bool EraseFlag = true;						// 削除ﾓｰﾄﾞに移行するかのフラグ
 		std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)
 			{
@@ -19,6 +21,7 @@ struct Fall
 				}
 			}
 		);
+		
 		if (EraseFlag)
 		{
 			stage.playUnit_->StartVive(200, 100);
@@ -26,6 +29,7 @@ struct Fall
 		}
 		std::for_each(stage.puyoVec_.rbegin(), stage.puyoVec_.rend(), [&](std::shared_ptr<Puyo>& puyo)			// データに格納
 			{
+				stage.SetPermition(puyo);
 				if (!puyo->GetDirPermit().perBit.d)
 				{
 					Vector2 vec = puyo->GetGrid(stage.blockSize_);

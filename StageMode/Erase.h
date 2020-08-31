@@ -19,6 +19,7 @@ struct Erase
 					{
 						auto pos = puyo->GetGrid(stage.blockSize_);
 						stage.data_[pos.x][pos.y].reset();
+						stage.SetPermition(puyo);
 					}
 				);
 				stage.playUnit_->StartVive(1000,500);

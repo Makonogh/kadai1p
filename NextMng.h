@@ -22,6 +22,7 @@ private:
 	int blockSize_;										// 1マスサイズ
 	int nextMax_;										// NEXT格納数
 	int screenID_;										// 描画のスクリーンID
+	unsigned int count;									// 何回目の生成か保存するため（これは１Pと２Pで同じぷよを出すために必要）
 	std::vector<std::shared_ptr<Puyo>> puyoList_;		// ぷよの種類を格納するID
 };
 

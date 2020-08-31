@@ -78,8 +78,6 @@ private:
 	StageMode stagemode_;							// ステージモードを格納する変数
 	std::map<StageMode, std::function<void(Stage&)>> stageAct_;
 
-	
-
 	friend PlayUnit;
 	friend Drop;
 	friend Erase;

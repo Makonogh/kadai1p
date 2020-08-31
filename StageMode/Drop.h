@@ -11,8 +11,10 @@ struct Drop
 				stage.SetPermition(puyo);
 			}
 		);*/
-		stage.playUnit_->Update();
+		
+		
 		stage.stageAct_[StageMode::Fall](stage);
+		stage.playUnit_->Update();
 		
 
 		//bool EraseFlag = false;						// íœÓ°ÄŞ‚ÉˆÚs‚·‚é‚©‚Ìƒtƒ‰ƒO

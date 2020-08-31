@@ -28,7 +28,6 @@ bool Puyo::Update()
 	puyoCount_++;
 	if (dirPermit_.perBit.d == 1)
 	{
-
 		if (puyoFrame_ < dropSpeed_ )
 		{
 			puyoFrame_++;
@@ -240,11 +239,8 @@ void Puyo::Init()
 
 void Puyo::Draw()
 {
-	/*DrawCircle(pos_.x + size_ / 2,pos_.y + size_ / 2,size_ / 2,color_[type_],true);*/
-
 	if (lead_ != 0)
 	{
-		/*DrawRectGraph(pos_.x, (spos_y - 1) * size_, size_ * color_[type_], 0, size_, size_, PuyoImage, true, false);*/
 		DrawCircle(pos_.x + size_ / 2, (spos_y - 1) * size_ + size_ / 2, size_ / 5, color_[type_], true);
 	}
 	if (dethCount_ % 3 == 0)

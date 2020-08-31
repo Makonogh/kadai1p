@@ -19,18 +19,17 @@ PlayUnit::~PlayUnit()
 bool PlayUnit::Update()
 {
 	auto CntData = stage_.controller_->GetCntData();
+	
 	for (auto data : InputID())
 	{
 		KeyAct[data](CntData);
 	}
+	stage_.GetSpuyo();
 	if (CheckBady(0, !stage_.puyoVec_[0 ^ 1]->GetDirPermit().perBit.d) || CheckBady(1, !stage_.puyoVec_[1 ^ 1]->GetDirPermit().perBit.d))
 	{
-		
-		targetID_ = 0;
-		
+		targetID_ = 0;	
 		return true;
 	}
-	stage_.GetSpuyo();
 	return false;
 }
 
@@ -164,15 +163,15 @@ void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen };
 	}
 
-	if (CheckMove(stage_.GetGrid(RotPos)))
-	{
-		stage_.puyoVec_[targetID_ ^ 1]->SetPos(RotPos);
-	}
-
 	if (stage_.puyoVec_[targetID_]->GetPos().y < stage_.puyoVec_[targetID_ ^ 1]->GetPos().y)
 	{
 		std::swap(stage_.puyoVec_[targetID_], stage_.puyoVec_[targetID_ ^ 1]);
 		targetID_ ^= 1;
+	}
+
+	if (CheckMove(stage_.GetGrid(RotPos)))
+	{
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos(RotPos);
 	}
 }
 

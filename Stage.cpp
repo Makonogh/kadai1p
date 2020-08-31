@@ -140,8 +140,6 @@ bool Stage::Init(void)
 	stageAct_.try_emplace(StageMode::Fall, Fall());
 	stageAct_.try_emplace(StageMode::Munyon, Munyon());
 	stageAct_.try_emplace(StageMode::Puyon, Puyon());
-
-	
 	
 	return false;
 }

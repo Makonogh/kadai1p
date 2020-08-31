@@ -31,13 +31,14 @@ public:
 		s_instance = nullptr;
 	}
 	void Run(void);
+	unsigned int seed;
 	const Vector2 screenSize_;
 private:
 	SceneMng();
 	~SceneMng();
 	void Draw(void);
 	bool Init(void);
-
+	
 	std::vector<std::unique_ptr<Stage>> playStage_;
 	
 	int frame_;

@@ -3,6 +3,8 @@
 #include "common/Vector2.h"
 #include "Effect.h"
 #include "NextMng.h"
+#include <stdio.h>
+#include <time.h>
 
 SceneMng* SceneMng::s_instance = nullptr;
 
@@ -16,14 +18,12 @@ void SceneMng::Run(void)
 			stage->Update();
 		}
 		Draw();
-		
 		frame_++;
 	}
 }
 
 SceneMng::SceneMng() : screenSize_({ 1280, 720 })
 {
-	
 }
 
 SceneMng::~SceneMng()
@@ -48,10 +48,9 @@ void SceneMng::Draw(void)
 
 bool SceneMng::Init(void)
 {
-	
 	SetGraphMode(screenSize_.x, screenSize_.y, 16);
 	ChangeWindowMode(true);
-	SetWindowText("Ç’ÇÊÇ’ÇÊ");
+	SetWindowText("1916020_ìcíÜê^êl");
 	SetDrawScreen(DX_SCREEN_BACK);						//  ﬁØ∏ ﬁØÃßÇ…ê›íË
 	if (DxLib_Init() == -1)
 	{
@@ -59,8 +58,8 @@ bool SceneMng::Init(void)
 	}
 	frame_ = 0;
 	backImage = LoadGraph("image/back.png", true);
+	seed = (unsigned int)time(NULL);
 	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
-	/*playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));*/
-
+	playStage_.emplace_back(std::make_unique<Stage>(std::move(Vector2(60, 80)), std::move(Vector2(288, 576))));
 	return true;
 }
