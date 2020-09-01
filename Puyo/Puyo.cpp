@@ -46,6 +46,7 @@ bool Puyo::Update()
 	}
 	else
 	{
+		dropCount_++;
 		return true;
 	}
 	return false;
@@ -159,6 +160,11 @@ bool Puyo::GetAlive(void)
 	}
 }
 
+int Puyo::GetDropCount(void)
+{
+	return dropCount_;
+}
+
 void Puyo::DethCount(void)
 {
 	if (!alive_)
@@ -236,6 +242,7 @@ void Puyo::Init()
 	puyoCount_ = -1;
 	puyonFrame_ = 0;
 	PuyoImage = LoadGraph("image/puyo.png",true);
+	dropCount_ = 0;
 
 	color_.try_emplace(PuyoType::RED, 0xff0000);
 	color_.try_emplace(PuyoType::GREEN, 0x00ff00);

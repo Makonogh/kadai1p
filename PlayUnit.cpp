@@ -135,7 +135,7 @@ void PlayUnit::StartVive(int pow,int time)
 void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 {
 	auto MoveLen = stage_.blockSize_;
-	Vector2 RotPos;
+	Vector2 RotPos = {0,0};
 	// Rotate true::ŽžŒv‰ñ‚è false::”¼ŽžŒv‰ñ‚è
 	if (Rotate)
 	{
@@ -145,27 +145,39 @@ void PlayUnit::RotPuyo(Vector2 vec1, Vector2 vec2, bool Rotate)
 	if (vec1.y < vec2.y)
 		// ã‚É‚¢‚é‚Æ‚«
 	{
-		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x + MoveLen , stage_.puyoVec_[targetID_]->GetPos().y};
+		RotPos = {vec1.x + MoveLen , vec1.y};
 	}
 	if (vec1.y > vec2.y)
 		// ‰º‚É‚¢‚é‚Æ‚«
 	{
-		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x - MoveLen , stage_.puyoVec_[targetID_]->GetPos().y};
+		RotPos = { vec1.x - MoveLen , vec1.y};
 	}
 	if (vec1.x < vec2.x)
 		// ‰E‚É‚¢‚é‚Æ‚«
 	{
-		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x , stage_.puyoVec_[targetID_]->GetPos().y - MoveLen};
+		RotPos = { vec1.x , vec1.y - MoveLen};
 	}
 	if (vec1.x > vec2.x)
 		// ¶‚É‚¢‚é‚Æ‚«
 	{
-		RotPos = { stage_.puyoVec_[targetID_]->GetPos().x, stage_.puyoVec_[targetID_]->GetPos().y + MoveLen };
+		RotPos = { vec1.x, vec1.y + MoveLen };
 	}
 	if (CheckMove(stage_.GetGrid(RotPos)))
 	{
 		stage_.puyoVec_[targetID_ ^ 1]->SetPos(RotPos);
 	}
+	else if(CheckMove(stage_.GetGrid(vec1 - (RotPos - vec1))))
+	{
+		stage_.puyoVec_[targetID_]->SetPos(vec1 - (RotPos - vec1));
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos(vec1);
+	}
+	else
+	{
+		stage_.puyoVec_[targetID_]->SetPos(vec2);
+		stage_.puyoVec_[targetID_ ^ 1]->SetPos(vec1);
+		
+	}
+
 	if (stage_.puyoVec_[0]->GetPos().y > stage_.puyoVec_[1]->GetPos().y)
 	{
 		std::swap(stage_.puyoVec_[targetID_], stage_.puyoVec_[targetID_ ^ 1]);
@@ -189,7 +201,7 @@ bool PlayUnit::CheckBady(int id, int bit)
 {
 	if (bit)
 	{
-		stage_.puyoVec_[id]->ChangeSpeed(6);
+		stage_.puyoVec_[id]->ChangeSpeed(12);
 		stage_.puyoVec_[id]->SetLead(0);
 		stage_.stagemode_ = StageMode::Fall;
 		return true;

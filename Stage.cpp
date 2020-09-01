@@ -62,6 +62,12 @@ void Stage::Draw(void)
 			puyo->Draw();
 		}
 	);
+	int x = 0;
+	for (auto puyo : puyoVec_)
+	{
+		DrawFormatString(puyo->GetPos().x, puyo->GetPos().y, 0xffffff, "%d", x);
+		x++;
+	}
 	DrawBox(0, 0, size_.x, size_.y, 0xffffff, false);
 	SetDrawScreen(ojamaID_);
 	ClsDrawScreen();
@@ -130,7 +136,7 @@ bool Stage::Init(void)
 	NextList_ = std::make_unique<NextMng>(Vector2( pos_.x + size_.x + blockSize_,pos_.y + blockSize_ ),blockSize_,id_);
 	PuyoInstance();
 
-	SetGamePad();
+	SetKeyInput();
 	controller_->Setup(id_);
 	playUnit_ = std::make_unique<PlayUnit>(*this);
 	stagemode_ = StageMode::Drop;

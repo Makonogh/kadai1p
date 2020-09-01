@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\ResultScene.cpp" />
     <ClCompile Include="Scene\GameScene.cpp" />
     <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -167,10 +168,12 @@
     <ClCompile Include="PlayUnit.cpp" />
     <ClCompile Include="SceneMng.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="_debug\_DebugConOut.cpp" />
     <ClCompile Include="_debug\_DebugDispOut.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\ResultScene.h" />
     <ClInclude Include="Scene\GameScene.h" />
     <ClInclude Include="Scene\BaseScene.h" />
     <ClInclude Include="common\details\Vector2.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="StageMode\Munyon.h" />
     <ClInclude Include="StageMode\Puyon.h" />
     <ClInclude Include="StageMode\Fall.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="_debug\_DebugConOut.h" />
     <ClInclude Include="_debug\_DebugDispOut.h" />
   </ItemGroup>

@@ -47,6 +47,7 @@ public:
 	void SoftDrop(void);					// ソフトドロップ関数
 	void SetAlive(bool alive);				// 死の宣告(消していいかフラグ)
 	bool GetAlive(void);					// フラグの取得
+	int GetDropCount(void);				    // ドロップしてからのカウント取得
 	void DethCount(void);					// 死の宣告のカウントする関数
 	void SetLead(int x);					// 操作ぷよのセット
 	void SetSpos(int y);					// ステルスぷよの座標セット
@@ -77,6 +78,7 @@ private:
 	int puyoFrame_;							// ぷよのフレームカウント
 	int puyonFrame_;						// ぷよんのカウント
 	int dethCount_;							// ぷよの死の宣告食らった後のカウント
-	int puyoCount_;							// ぷよ独自のカウント（生成されてから消されるまでカウントし続ける（アニメーションに使えるかなと））
+	int puyoCount_;							// ぷよ独自のカウント（生成されてから消されるまでカウントし続ける（アニメーションに使えるかなと）
+	int dropCount_;
 };
 
